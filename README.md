@@ -1,14 +1,11 @@
 # Moncef Gastronomia — Cardápio
 
-Página de cardápio digital da Moncef Gastronomia.
+Cardápio digital responsivo da Moncef Gastronomia, preparado para publicação gratuita pelo GitHub Pages.
 
-- **Cardápio publicado:** https://site.zapia.com/bn2sg1ul
-- **Instagram:** @moncef_gastronomia
-- **WhatsApp:** +55 (35) 9154-3236
+## Arquivos
 
-## Conteúdo
+- `index.html` — página e navegação por categorias.
+- `pizza.jpg`, `esfihas.jpg`, `porcoes.jpg`, `acai-bebidas.jpg` — imagens ilustrativas dos produtos.
+- `fachada.jpg`, `logo.jpg` — imagem da fachada e logo enviados para a página.
 
-- `index.html` — página responsiva, com navegação por categorias, preços, contatos e links para pedidos.
-- As fotografias ilustrativas e os recortes da fachada/logo são carregados por links públicos persistentes.
-
-As imagens de produtos são ilustrativas; a apresentação real pode variar. Os preços e os dados do cardápio devem ser confirmados com o estabelecimento antes do uso comercial.
+As imagens e o código estão neste repositório para que o site não dependa de links externos de arquivos. As fotos dos produtos são ilustrativas; preços e dados devem ser confirmados antes do uso comercial.
