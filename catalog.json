@@ -1,0 +1,3431 @@
+[
+  {
+    "id": "p001",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "4 Queijos",
+    "description": "Provolone, parmesão, requeijão e muçarela",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p002",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "Calabresa Barbecue",
+    "description": "Calabresa e molho barbecue",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p003",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "Calabresa Mineira",
+    "description": "Calabresa e cebola",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p004",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "Frango",
+    "description": "Frango desfiado, requeijão ou cheddar",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p005",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "Lombinho",
+    "description": "Lombinho canadense e requeijão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p006",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "Madri",
+    "description": "Calabresa, tomate e cebola",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p007",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "Portuguesa",
+    "description": "Presunto, ovo cozido, tomate, ervilha e cebola",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p008",
+    "category": "Pizzas",
+    "group": "Tradicionais",
+    "name": "Viena",
+    "description": "Presunto, manjericão fresco, champignon, tomate e parmesão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 42
+      },
+      {
+        "label": "8 fatias",
+        "price": 68
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p009",
+    "category": "Pizzas",
+    "group": "Promocionais",
+    "name": "Calabresa Paulista",
+    "description": "Calabresa e cebola (sem muçarela)",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 35
+      },
+      {
+        "label": "8 fatias",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p010",
+    "category": "Pizzas",
+    "group": "Promocionais",
+    "name": "Marguerita",
+    "description": "Tomate, alho dourado, parmesão e manjericão fresco",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 35
+      },
+      {
+        "label": "8 fatias",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p011",
+    "category": "Pizzas",
+    "group": "Promocionais",
+    "name": "Margueritinha",
+    "description": "Tomate-cereja, alho dourado, parmesão e manjericão fresco",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 35
+      },
+      {
+        "label": "8 fatias",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p012",
+    "category": "Pizzas",
+    "group": "Promocionais",
+    "name": "Muçarela",
+    "description": "Muçarela e tomate",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 35
+      },
+      {
+        "label": "8 fatias",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p013",
+    "category": "Pizzas",
+    "group": "Promocionais",
+    "name": "Napolitana",
+    "description": "Tomate e parmesão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 35
+      },
+      {
+        "label": "8 fatias",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p014",
+    "category": "Pizzas",
+    "group": "Promocionais",
+    "name": "Parmegiana",
+    "description": "Presunto, manjericão fresco e parmesão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 35
+      },
+      {
+        "label": "8 fatias",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p015",
+    "category": "Pizzas",
+    "group": "Promocionais",
+    "name": "Presunto",
+    "description": "Muçarela e presunto",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 35
+      },
+      {
+        "label": "8 fatias",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p016",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "5 Queijos",
+    "description": "Provolone, parmesão, requeijão, gorgonzola e muçarela",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p017",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Bacon Especial",
+    "description": "Bacon, ovo cozido, parmesão e cheddar",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p018",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Batata Especial",
+    "description": "Batata frita, cheddar e bacon",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p019",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Brócolis Especial",
+    "description": "Brócolis, alho dourado, bacon e requeijão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p020",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Calabresa Especial",
+    "description": "Calabresa, cheddar, bacon e cebola",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p021",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Franguinho",
+    "description": "Frango desfiado, milho, requeijão e parmesão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p022",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Frango Especial",
+    "description": "Frango desfiado, requeijão e batata palha",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p023",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Lombinho com Abacaxi",
+    "description": "Lombinho canadense e abacaxi",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p024",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Milho Especial",
+    "description": "Milho, ovo cozido, requeijão e parmesão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p025",
+    "category": "Pizzas",
+    "group": "Especiais",
+    "name": "Palmito Especial",
+    "description": "Palmito, requeijão, tomate, cebola e parmesão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 44
+      },
+      {
+        "label": "8 fatias",
+        "price": 74
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p026",
+    "category": "Pizzas",
+    "group": "Gourmet",
+    "name": "Alcatra Especial",
+    "description": "Alcatra, alho dourado, champignon e requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 53
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p027",
+    "category": "Pizzas",
+    "group": "Gourmet",
+    "name": "Alcatra com Fritas",
+    "description": "Alcatra, batata frita e catupiry",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 53
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p028",
+    "category": "Pizzas",
+    "group": "Gourmet",
+    "name": "Carne Seca Barbecue",
+    "description": "Carne seca, cebola-roxa, barbecue e tomate-cereja",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p029",
+    "category": "Pizzas",
+    "group": "Gourmet",
+    "name": "Carne Seca",
+    "description": "Carne seca. Escolha: requeijão, cheddar ou cream cheese",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p030",
+    "category": "Pizzas",
+    "group": "Gourmet",
+    "name": "Costela à Moda",
+    "description": "Costela desfiada, requeijão, provolone e pimenta-biquinho",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p031",
+    "category": "Pizzas",
+    "group": "Gourmet",
+    "name": "Doritos",
+    "description": "Bacon, cheddar e Doritos",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 55
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p032",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "6 Queijos",
+    "description": "Parmesão, provolone, gorgonzola, requeijão e cheddar",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p033",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "5 Carnes",
+    "description": "Calabresa, lombinho, costela, bacon e frango desfiado",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p034",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "À Moda da Casa",
+    "description": "Presunto, calabresa, bacon, cebola e ovo cozido",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p035",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Atum",
+    "description": "Atum e cebola",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p036",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Brócolis à Moda",
+    "description": "Brócolis, frango desfiado, alho dourado, bacon e requeijão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p037",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Calabresa à Moda",
+    "description": "Calabresa, cebola, milho, bacon e requeijão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p038",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Peito de Peru",
+    "description": "Peito de peru e requeijão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p039",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Costela",
+    "description": "Costela desfiada e cebola-roxa. Escolha cheddar, requeijão ou cream cheese",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p040",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Estrogonofe",
+    "description": "Estrogonofe, champignon e batata palha. Escolha carne ou frango",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p041",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Franbacon",
+    "description": "Frango desfiado e bacon. Escolha requeijão, cheddar ou cream cheese",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p042",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Moncef à Moda",
+    "description": "Presunto, lombinho, calabresa ralada e requeijão",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p043",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Peito de Peru com Abacaxi",
+    "description": "Peito de peru e abacaxi",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p044",
+    "category": "Pizzas",
+    "group": "Premium",
+    "name": "Portuguesa à Moda",
+    "description": "Presunto, ervilha, palmito, requeijão, cebola, tomate e ovo cozido",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p045",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Banana Nevada",
+    "description": "Creme de leite, banana, chocolate branco e canela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p046",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Brigadeiro com Morango",
+    "description": "Creme de leite condensado, chocolate preto, granulado, morango e brigadeiro",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p047",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "KitKat",
+    "description": "Creme de leite, chocolate ao leite, KitKat, amendoim triturado e leite condensado",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p048",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Mesclado",
+    "description": "Creme de leite, chocolate preto e chocolate branco",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 48
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p049",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Morango ao Chocolate",
+    "description": "Creme de leite, morango, chocolate preto e chocolate branco",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 48
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p050",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "M&M",
+    "description": "Creme de leite, chocolate ao leite, M&M e leite condensado",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p051",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Ouro Branco",
+    "description": "Creme de leite, chocolate ao leite, Ouro Branco, amendoim triturado e leite condensado",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p052",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Ovomaltine",
+    "description": "Creme de leite, chocolate ao leite, Ovomaltine e leite condensado",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p053",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Prestígio",
+    "description": "Creme de leite, chocolate ao leite, leite condensado, coco ralado e Prestígio",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p054",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Romeu e Julieta",
+    "description": "Muçarela, goiabada e catupiry",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 42
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p055",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Tentação",
+    "description": "Creme de leite, chocolate ao leite, morango e calda de morango",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 48
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p056",
+    "category": "Pizzas",
+    "group": "Doces",
+    "name": "Uva ao Chocolate",
+    "description": "Creme de leite, uva, chocolate ao leite e chocolate branco",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 48
+      }
+    ],
+    "enabled": true,
+    "kind": "pizza"
+  },
+  {
+    "id": "p057",
+    "category": "Pizzas",
+    "group": "Monte sua pizza",
+    "name": "Monte sua pizza",
+    "description": "Molho de tomate, muçarela, orégano e azeitonas + 5 ingredientes à escolha.",
+    "variants": [
+      {
+        "label": "4 fatias",
+        "price": 48
+      },
+      {
+        "label": "8 fatias",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "custom-pizza"
+  },
+  {
+    "id": "p058",
+    "category": "Complementos",
+    "group": "Bordas recheadas",
+    "name": "Borda recheada",
+    "description": "Sabores: catupiry, cheddar, chocolate ou cream cheese.",
+    "variants": [
+      {
+        "label": "pizza 4 fatias",
+        "price": 9
+      },
+      {
+        "label": "pizza 8 fatias",
+        "price": 16
+      }
+    ],
+    "enabled": true,
+    "kind": "crust"
+  },
+  {
+    "id": "p059",
+    "category": "Pizzas",
+    "group": "Calzones",
+    "name": "Calzone pequeno",
+    "description": "Escolha um sabor de pizza, doce ou salgado.",
+    "variants": [
+      {
+        "label": "pequeno",
+        "price": 40
+      }
+    ],
+    "enabled": true,
+    "kind": "calzone"
+  },
+  {
+    "id": "p060",
+    "category": "Pizzas",
+    "group": "Calzones",
+    "name": "Calzone grande",
+    "description": "Escolha um sabor de pizza, doce ou salgado.",
+    "variants": [
+      {
+        "label": "grande",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "calzone"
+  },
+  {
+    "id": "p061",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Azeitonas pretas — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p062",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Bacon — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p063",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Brócolis — Requeijão e bacon",
+    "description": "Requeijão e bacon",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p064",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Calabresa ralada — Cebola e tomate picados",
+    "description": "Cebola e tomate picados",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p065",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Calabresa ralada — Requeijão",
+    "description": "Requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p066",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Calabresa ralada — Cheddar",
+    "description": "Cheddar",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p067",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Calabresa ralada — Cream cheese",
+    "description": "Cream cheese",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p068",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Carne — Cebola e tomate picados",
+    "description": "Cebola e tomate picados",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p069",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Frango — Requeijão",
+    "description": "Requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p070",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Frango — Cheddar",
+    "description": "Cheddar",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p071",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Frango — Cream cheese",
+    "description": "Cream cheese",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p072",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Milho — Bacon e requeijão",
+    "description": "Bacon e requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p073",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Muçarela",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p074",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Muçarela — Alho",
+    "description": "Alho",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p075",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Muçarela — Tomate",
+    "description": "Tomate",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p076",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Palmito — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p077",
+    "category": "Esfihas",
+    "group": "Tradicionais",
+    "name": "Presunto — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p078",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "4 Queijos",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p079",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Calabresa ralada — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p080",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Carne — Cebola, tomate picados e bacon",
+    "description": "Cebola, tomate picados e bacon",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p081",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Carne — Cebola, tomate picados e muçarela",
+    "description": "Cebola, tomate picados e muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p082",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Carne seca — Requeijão",
+    "description": "Requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p083",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Carne seca — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p084",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Costela — Requeijão",
+    "description": "Requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p085",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Costela — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p086",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Doritos — Muçarela e cheddar",
+    "description": "Muçarela e cheddar",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p087",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Frango — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p088",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Lombinho — Muçarela e requeijão",
+    "description": "Muçarela e requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p089",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Muçarela — Milho e bacon",
+    "description": "Milho e bacon",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p090",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Peito de peru — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p091",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Peito de peru — Muçarela e abacaxi",
+    "description": "Muçarela e abacaxi",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p092",
+    "category": "Esfihas",
+    "group": "Gourmet",
+    "name": "Tomate seco — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p093",
+    "category": "Esfihas",
+    "group": "Combos",
+    "name": "Combo 6 esfihas tradicionais",
+    "description": "",
+    "variants": [
+      {
+        "label": "6 esfihas",
+        "price": 45
+      }
+    ],
+    "enabled": true,
+    "kind": "combo"
+  },
+  {
+    "id": "p094",
+    "category": "Esfihas",
+    "group": "Combos",
+    "name": "Combo 6 esfihas gourmet",
+    "description": "",
+    "variants": [
+      {
+        "label": "6 esfihas",
+        "price": 56
+      }
+    ],
+    "enabled": true,
+    "kind": "combo"
+  },
+  {
+    "id": "p095",
+    "category": "Esfihas",
+    "group": "Combos",
+    "name": "Combo 10 esfihas tradicionais",
+    "description": "",
+    "variants": [
+      {
+        "label": "10 esfihas",
+        "price": 70
+      }
+    ],
+    "enabled": true,
+    "kind": "combo"
+  },
+  {
+    "id": "p096",
+    "category": "Esfihas",
+    "group": "Combos",
+    "name": "Combo 10 esfihas gourmet",
+    "description": "",
+    "variants": [
+      {
+        "label": "10 esfihas",
+        "price": 90
+      }
+    ],
+    "enabled": true,
+    "kind": "combo"
+  },
+  {
+    "id": "p097",
+    "category": "Esfihas",
+    "group": "Combos",
+    "name": "Combo 15 esfihas tradicionais",
+    "description": "",
+    "variants": [
+      {
+        "label": "15 esfihas",
+        "price": 98
+      }
+    ],
+    "enabled": true,
+    "kind": "combo"
+  },
+  {
+    "id": "p098",
+    "category": "Esfihas",
+    "group": "Combos",
+    "name": "Combo 15 esfihas gourmet",
+    "description": "",
+    "variants": [
+      {
+        "label": "15 esfihas",
+        "price": 120
+      }
+    ],
+    "enabled": true,
+    "kind": "combo"
+  },
+  {
+    "id": "p099",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Banana — Chocolate branco e canela",
+    "description": "Chocolate branco e canela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 9
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p100",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Brigadeiro",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p101",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Chocolate ao leite — Muçarela",
+    "description": "Muçarela",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 11
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p102",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Chocolate ao leite — Morango",
+    "description": "Morango",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p103",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Coco em flocos — Chocolate ao leite",
+    "description": "Chocolate ao leite",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p104",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Ferrero — Creme de avelã",
+    "description": "Creme de avelã",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 15
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p105",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Goiabada — Requeijão",
+    "description": "Requeijão",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p106",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "KitKat — Chocolate ao leite",
+    "description": "Chocolate ao leite",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 11
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p107",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "M&M — Chocolate ao leite",
+    "description": "Chocolate ao leite",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p108",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Nutella",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 14
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p109",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Nutella — Morango",
+    "description": "Morango",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 15
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p110",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Oreo — Chocolate branco",
+    "description": "Chocolate branco",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p111",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Ovomaltine — Chocolate branco",
+    "description": "Chocolate branco",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 8
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p112",
+    "category": "Esfihas",
+    "group": "Doces",
+    "name": "Ouro Branco — Chocolate ao leite",
+    "description": "Chocolate ao leite",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "esfiha"
+  },
+  {
+    "id": "p113",
+    "category": "Porções",
+    "group": "Batata recheada",
+    "name": "4 Queijos",
+    "description": "Catupiry, muçarela, parmesão e provolone",
+    "variants": [
+      {
+        "label": "450 g",
+        "price": 33
+      },
+      {
+        "label": "680 g",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p114",
+    "category": "Porções",
+    "group": "Batata recheada",
+    "name": "Bolonhesa",
+    "description": "Bolonhesa, muçarela e bacon",
+    "variants": [
+      {
+        "label": "450 g",
+        "price": 33
+      },
+      {
+        "label": "680 g",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p115",
+    "category": "Porções",
+    "group": "Batata recheada",
+    "name": "Costela",
+    "description": "Costela, muçarela, cheddar e bacon",
+    "variants": [
+      {
+        "label": "450 g",
+        "price": 33
+      },
+      {
+        "label": "680 g",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p116",
+    "category": "Porções",
+    "group": "Batata recheada",
+    "name": "Carne seca",
+    "description": "Carne seca, muçarela, catupiry e bacon",
+    "variants": [
+      {
+        "label": "450 g",
+        "price": 33
+      },
+      {
+        "label": "680 g",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p117",
+    "category": "Porções",
+    "group": "Batata recheada",
+    "name": "Frango",
+    "description": "Frango, muçarela, catupiry e milho",
+    "variants": [
+      {
+        "label": "450 g",
+        "price": 33
+      },
+      {
+        "label": "680 g",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p118",
+    "category": "Porções",
+    "group": "Batata recheada",
+    "name": "Estrogonofe de carne ou frango",
+    "description": "Estrogonofe, muçarela, bacon e batata palha",
+    "variants": [
+      {
+        "label": "450 g",
+        "price": 33
+      },
+      {
+        "label": "680 g",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p119",
+    "category": "Porções",
+    "group": "Batatas fritas",
+    "name": "Pequena · 300 g",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 21
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p120",
+    "category": "Porções",
+    "group": "Batatas fritas",
+    "name": "Grande · 500 g",
+    "description": "Acompanha molho rosé, barbecue e bacon",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 33
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p121",
+    "category": "Porções",
+    "group": "Com cheddar e bacon",
+    "name": "Pequena · 300 g — Com cheddar e bacon",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 30
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p122",
+    "category": "Porções",
+    "group": "Com cheddar e bacon",
+    "name": "Grande · 500 g — Com cheddar e bacon",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 48
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p123",
+    "category": "Porções",
+    "group": "Mini salgadinhos",
+    "name": "30 unidades",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 25
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p124",
+    "category": "Porções",
+    "group": "Mini salgadinhos",
+    "name": "50 unidades",
+    "description": "Acompanha molho rosé, barbecue e bacon",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 39
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p125",
+    "category": "Porções",
+    "group": "Kibes grandes",
+    "name": "Carne — Kibes grandes",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 13
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p126",
+    "category": "Porções",
+    "group": "Kibes grandes",
+    "name": "Catupiry — Kibes grandes",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 13
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p127",
+    "category": "Porções",
+    "group": "Bolinho de mandioca com costela",
+    "name": "12 unidades · 30 g cada",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 40
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p128",
+    "category": "Porções",
+    "group": "Torresmo",
+    "name": "450 g (in natura)",
+    "description": "Acompanha 100 g de guacamole",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 30
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p129",
+    "category": "Porções",
+    "group": "Tilápia",
+    "name": "400 g",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p130",
+    "category": "Porções",
+    "group": "Contra filé acebolado",
+    "name": "400 g + 400 g de fritas",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 89
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p131",
+    "category": "Porções",
+    "group": "Frango frito",
+    "name": "400 g",
+    "description": "",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 50
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p132",
+    "category": "Porções",
+    "group": "Frango frito",
+    "name": "800 g",
+    "description": "Acompanha 1 molho: rosé, bacon ou barbecue",
+    "variants": [
+      {
+        "label": "porção",
+        "price": 80
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p133",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Açaí 200 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "200 ml",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p134",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Açaí 300 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 12
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p135",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Açaí 500 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "500 ml",
+        "price": 17
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p136",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Açaí 700 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "700 ml",
+        "price": 20
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p137",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Açaí 1 litro",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "1 litro",
+        "price": 40
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p138",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Cupuaçu 200 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "200 ml",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p139",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Cupuaçu 300 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 12
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p140",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Cupuaçu 500 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "500 ml",
+        "price": 17
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p141",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Cupuaçu 700 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "700 ml",
+        "price": 20
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p142",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Cupuaçu 1 litro",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "1 litro",
+        "price": 40
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p143",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Mesclado 200 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "200 ml",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p144",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Mesclado 300 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 12
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p145",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Mesclado 500 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "500 ml",
+        "price": 17
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p146",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Mesclado 700 ml",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "700 ml",
+        "price": 20
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p147",
+    "category": "Açaí",
+    "group": "Tamanhos",
+    "name": "Mesclado 1 litro",
+    "description": "Personalize com adicionais no cardápio.",
+    "variants": [
+      {
+        "label": "1 litro",
+        "price": 40
+      }
+    ],
+    "enabled": true,
+    "kind": "acai"
+  },
+  {
+    "id": "p148",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Brigadeiro",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p149",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Chocolate ao leite",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p150",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Chocolate branco",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p151",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Confete",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p152",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "KitKat",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p153",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Nutella",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 7
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p154",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Ouro Branco",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p155",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Ovomaltine",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p156",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Ovomaltine Rocks",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 5
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p157",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Power Ball",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p158",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Prestígio",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p159",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Sonho de Valsa",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p160",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Trento",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p161",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Amendoim",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p162",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Aveia",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p163",
+    "category": "Adicionais",
+    "group": "Chocolates",
+    "name": "Granola",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p164",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Avelã",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 5
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p165",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Leite Ninho",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p166",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Pistache",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 7
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p167",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Chantilly",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p168",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Leite condensado",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p169",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Leite em pó",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p170",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Leite em pó Ninho",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 5
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p171",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Chocolate",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p172",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Fini banana",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p173",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Fini beijinho",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p174",
+    "category": "Adicionais",
+    "group": "Cremes",
+    "name": "Morango",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p175",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Banana",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p176",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Cereja",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 5
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p177",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Manga",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p178",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Morango",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p179",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Uva",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p180",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Limão",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p181",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Maracujá",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p182",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Morango",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p183",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Uva",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p184",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Bala Fini",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p185",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Biscoito Oreo",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p186",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Jujuba",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p187",
+    "category": "Adicionais",
+    "group": "Frutas",
+    "name": "Paçoca",
+    "description": "Adicional para açaí.",
+    "variants": [
+      {
+        "label": "adicional",
+        "price": 3
+      }
+    ],
+    "enabled": true,
+    "kind": "extra"
+  },
+  {
+    "id": "p188",
+    "category": "Açaí",
+    "group": "Vitaminas",
+    "name": "Vitamina 1",
+    "description": "Açaí, leite condensado, banana e paçoca",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 10
+      },
+      {
+        "label": "500 ml",
+        "price": 16
+      }
+    ],
+    "enabled": true,
+    "kind": "vitamin"
+  },
+  {
+    "id": "p189",
+    "category": "Açaí",
+    "group": "Vitaminas",
+    "name": "Vitamina 2",
+    "description": "Açaí, leite condensado, aveia, morango e leite em pó",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 10
+      },
+      {
+        "label": "500 ml",
+        "price": 16
+      }
+    ],
+    "enabled": true,
+    "kind": "vitamin"
+  },
+  {
+    "id": "p190",
+    "category": "Açaí",
+    "group": "Vitaminas",
+    "name": "Vitamina 3",
+    "description": "Açaí, leite condensado, Ovomaltine, banana e leite em pó",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 10
+      },
+      {
+        "label": "500 ml",
+        "price": 16
+      }
+    ],
+    "enabled": true,
+    "kind": "vitamin"
+  },
+  {
+    "id": "p191",
+    "category": "Açaí",
+    "group": "Vitaminas",
+    "name": "Vitamina 4",
+    "description": "Açaí, leite condensado, cupuaçu e leite em pó",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 10
+      },
+      {
+        "label": "500 ml",
+        "price": 16
+      }
+    ],
+    "enabled": true,
+    "kind": "vitamin"
+  },
+  {
+    "id": "p192",
+    "category": "Açaí",
+    "group": "Vitaminas",
+    "name": "Vitamina 5",
+    "description": "Açaí, leite condensado, manga e leite em pó",
+    "variants": [
+      {
+        "label": "300 ml",
+        "price": 10
+      },
+      {
+        "label": "500 ml",
+        "price": 16
+      }
+    ],
+    "enabled": true,
+    "kind": "vitamin"
+  },
+  {
+    "id": "p193",
+    "category": "Bebidas",
+    "group": "Refrigerantes",
+    "name": "Coca-Cola · 2 L",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 15
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p194",
+    "category": "Bebidas",
+    "group": "Refrigerantes",
+    "name": "Fanta · 2 L",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 12
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p195",
+    "category": "Bebidas",
+    "group": "Refrigerantes",
+    "name": "Sprite · 2 L",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 12
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p196",
+    "category": "Bebidas",
+    "group": "Refrigerantes",
+    "name": "Gebel · 2 L",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p197",
+    "category": "Bebidas",
+    "group": "Refrigerantes",
+    "name": "Coca-Cola · 600 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p198",
+    "category": "Bebidas",
+    "group": "Refrigerantes",
+    "name": "Coca-Cola · 350 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 7
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p199",
+    "category": "Bebidas",
+    "group": "Águas",
+    "name": "Com gás",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p200",
+    "category": "Bebidas",
+    "group": "Águas",
+    "name": "Sem gás",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 4
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p201",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Abacaxi · 300 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p202",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Abacaxi com hortelã · 300 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p203",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Laranja · 300 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p204",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Limão · 300 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p205",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Maracujá · 300 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p206",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Morango · 300 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 10
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p207",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Del Valle · 1 L",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 12
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p208",
+    "category": "Bebidas",
+    "group": "Sucos",
+    "name": "Del Valle · 296 ml",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 7
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p209",
+    "category": "Bebidas",
+    "group": "Cervejas · 350 ml",
+    "name": "Estrella Galicia",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 7
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p210",
+    "category": "Bebidas",
+    "group": "Cervejas · 350 ml",
+    "name": "Estrella Galicia 0%",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 7
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p211",
+    "category": "Bebidas",
+    "group": "Cervejas · 350 ml",
+    "name": "Therezópolis",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 7
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p212",
+    "category": "Bebidas",
+    "group": "Vinhos · garrafa",
+    "name": "Casillero del Diablo",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 89
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p213",
+    "category": "Bebidas",
+    "group": "Vinhos · garrafa",
+    "name": "Julia Florista",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 75
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p214",
+    "category": "Bebidas",
+    "group": "Vinhos · garrafa",
+    "name": "Concha y Toro",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 69
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  },
+  {
+    "id": "p215",
+    "category": "Bebidas",
+    "group": "Energético",
+    "name": "Lata",
+    "description": "",
+    "variants": [
+      {
+        "label": "unidade",
+        "price": 14
+      }
+    ],
+    "enabled": true,
+    "kind": "item"
+  }
+]

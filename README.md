@@ -1,11 +1,15 @@
-# Moncef Gastronomia — Cardápio
+# Moncef Gastronomia — Cardápio e demonstração
 
-Cardápio digital responsivo da Moncef Gastronomia, preparado para publicação gratuita pelo GitHub Pages.
+[Cardápio informativo ao vivo](https://m20513703-art.github.io/moncef-gastronomia-cardapio/)
 
-## Arquivos
+## Protótipo de delivery e PDV
 
-- `index.html` — página e navegação por categorias.
-- `pizza.jpg`, `esfihas.jpg`, `porcoes.jpg`, `acai-bebidas.jpg` — imagens ilustrativas dos produtos.
-- `fachada.jpg`, `logo.jpg` — imagem da fachada e logo enviados para a página.
+- `delivery.html` — navegação por categorias, carrinho, personalização de pizzas e açaí, checkout demonstrativo.
+- `pdv.html` — fila de pedidos, venda de balcão, cadastro/edição/indisponibilidade de produtos e configuração de horário/taxa.
+- `app.js` — lógica compartilhada entre as duas telas.
+- `catalog.json` — itens e preços derivados do cardápio já fornecido.
+- `delivery-pdv.css` — estilos das duas telas.
 
-As imagens e o código estão neste repositório para que o site não dependa de links externos de arquivos. As fotos dos produtos são ilustrativas; preços e dados devem ser confirmados antes do uso comercial.
+A demonstração grava produtos, pedidos e configurações no armazenamento local do navegador. As telas sincronizam apenas no mesmo navegador/aparelho; não há servidor, banco de dados, cobrança, envio à loja nem autenticação do PDV. Não use dados reais de clientes. Para operação real em vários aparelhos, receber pedidos e proteger o PDV, será necessário backend e banco de dados.
+
+Os dados de horários e taxa vêm com valores de exemplo e precisam ser confirmados pela Moncef. A divisão de pizzas meio a meio usa temporariamente o preço do sabor mais caro; confirmar a regra comercial. Fotos de produtos são ilustrativas.

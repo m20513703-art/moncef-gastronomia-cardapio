@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Peça online | Moncef Gastronomia</title>
+  <link rel="stylesheet" href="delivery-pdv.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="delivery">
+  <div class="demo-banner">DEMONSTRAÇÃO — pedidos e alterações ficam somente neste navegador; não é sistema de produção.</div>
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="logo.jpg" alt=""><span><strong>Moncef Gastronomia</strong><small>Cardápio de delivery</small></span></a>
+    <nav class="top-actions" aria-label="Navegação principal">
+      <a class="btn secondary" href="index.html">Cardápio informativo</a>
+      <a href="pdv.html">Abrir PDV de demonstração</a>
+    </nav>
+  </header>
+  <main class="page-wrap">
+    <section class="intro">
+      <h1>Peça pelo delivery</h1>
+      <p>Escolha os itens, revise o pedido e informe os dados de entrega. Esta versão é apenas uma demonstração.</p>
+      <div id="storeNotice" class="notice">Carregando disponibilidade...</div>
+    </section>
+    <div class="shop-layout">
+      <section aria-label="Cardápio">
+        <div class="section-head"><div><h2>Escolha seus produtos</h2><span class="muted">Os preços mostrados são os do cardápio cadastrado.</span></div></div>
+        <div id="categoryTabs" class="category-tabs" aria-label="Categorias"></div>
+        <div id="products" class="product-grid"></div>
+      </section>
+      <aside class="panel cart-panel" aria-label="Seu pedido">
+        <h2>🛒 Seu pedido <span id="cartCount" class="status-chip">0</span></h2>
+        <div id="cartItems" class="cart-empty">Seu carrinho está vazio.</div>
+        <div class="totals">
+          <div class="total-row"><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div>
+          <div class="total-row"><span>Entrega (demo)</span><strong id="deliveryFee">R$ 0,00</strong></div>
+          <div class="total-row total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+        </div>
+        <button id="checkoutButton" class="btn" type="button">Continuar pedido</button>
+        <p class="small-note">Na demonstração, não ocorre cobrança nem envio à loja. O pedido aparece no PDV aberto no mesmo navegador.</p>
+      </aside>
+    </div>
+  </main>
+  <dialog id="checkoutModal" class="modal">
+    <div class="modal-head"><h2>Dados do pedido</h2><button class="modal-close" type="button" data-close="checkoutModal" aria-label="Fechar">×</button></div>
+    <form id="checkoutForm" class="modal-body">
+      <p class="notice">Use dados fictícios nesta demonstração. Não informe telefone ou endereço real.</p>
+      <div class="form-grid">
+        <div class="field"><label for="customerName">Nome</label><input id="customerName" name="customerName" required autocomplete="name"></div>
+        <div class="field"><label for="customerPhone">Telefone de demonstração</label><input id="customerPhone" name="customerPhone" required autocomplete="off"></div>
+        <div class="field wide"><label for="customerAddress">Endereço de entrega</label><input id="customerAddress" name="customerAddress" required autocomplete="off" placeholder="Rua, número, bairro"></div>
+        <div class="field"><label for="paymentMethod">Forma de pagamento (demo)</label><select id="paymentMethod" name="paymentMethod"><option>Pix</option><option>Dinheiro</option><option>Cartão na entrega</option></select></div>
+        <div class="field"><label for="changeFor">Troco para (se necessário)</label><input id="changeFor" name="changeFor" placeholder="Ex.: R$ 100" inputmode="decimal"></div>
+        <div class="field wide"><label for="orderNotes">Observações</label><textarea id="orderNotes" name="orderNotes" placeholder="Instruções de entrega (somente fictícias)"></textarea></div>
+      </div>
+      <button class="btn" type="submit">Criar pedido de demonstração</button>
+      <div id="orderConfirmation" class="success-box hide"></div>
+    </form>
+  </dialog>
+  <footer class="footer-note">Cardápio e PDV em modo de demonstração. A sincronização usa o mesmo navegador e aparelho (armazenamento local), não um servidor.</footer>
+</body>
+</html>
