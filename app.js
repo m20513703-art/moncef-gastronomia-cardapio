@@ -8,7 +8,7 @@ let state = null;
 let catalog = [];
 let cart = [];
 let saleCart = [];
-let activeCategory = 'Todos';
+let activeCategory = 'Pizzas';
 
 async function boot() {
   const response = await fetch('catalog.json');
@@ -98,8 +98,9 @@ function initDelivery() {
 }
 function renderCategories() {
   const cats = ['Todos', ...new Set(state.products.filter(p => p.enabled !== false).map(p => p.category))];
+  const info = { 'Todos':['🍽️','Explore o cardápio'], 'Pizzas':['🍕','Sabores e tamanhos'], 'Complementos':['🧀','Bordas recheadas'], 'Esfihas':['🥟','Tradicionais, gourmet e doces'], 'Porções':['🍟','Para compartilhar'], 'Açaí':['🍧','Açaí, cupuaçu e vitaminas'], 'Adicionais':['🍫','Complementos para açaí'], 'Bebidas':['🥤','Sucos e bebidas'] };
   const root = document.getElementById('categoryTabs');
-  root.innerHTML = cats.map(c => `<button type="button" data-category="${esc(c)}" class="${c===activeCategory?'active':''}">${esc(c)}</button>`).join('');
+  root.innerHTML = cats.map(c => { const data=info[c]||['🍴','Veja opções e preços']; return `<button type="button" data-category="${esc(c)}" class="${c===activeCategory?'active':''}"><span class="shortcut-icon">${data[0]}</span><strong>${esc(c)}</strong><small>${esc(data[1])}</small></button>`; }).join('');
 }
 function renderProducts() {
   if (!document.getElementById('products')) return;
@@ -109,11 +110,11 @@ function renderProducts() {
   const root = document.getElementById('products');
   root.innerHTML = products.map(p => {
     const v = p.variants?.[0] || { label:'unidade', price:0 };
-    const pizzaOptions = p.kind === 'pizza' ? `<label>Outro sabor (opcional; preço demonstrativo pelo sabor de maior valor)</label><select data-flavor2><option value="">Sem segundo sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false && x.id !== p.id).map(x => `<option value="${esc(x.id)}">${esc(x.name)} · ${money(productUnitPrice(x, v.label))}</option>`).join('')}</select>` : '';
-    const calzoneOptions = p.kind === 'calzone' ? `<label>Sabor do calzone (demo)</label><select data-calzone-flavor><option value="">Escolha um sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false).map(x => `<option>${esc(x.name)}</option>`).join('')}</select>` : '';
-    const crustOptions = p.kind === 'crust' ? `<label>Sabor da borda</label><select data-crust-flavor><option>Catupiry</option><option>Cheddar</option><option>Chocolate</option><option>Cream cheese</option></select>` : '';
+    const pizzaOptions = p.kind === 'pizza' ? `<details class="customization"><summary>Combinar dois sabores (opcional)</summary><label>Segundo sabor · preço de exemplo pelo sabor mais caro</label><select data-flavor2><option value="">Sem segundo sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false && x.id !== p.id).map(x => `<option value="${esc(x.id)}">${esc(x.name)} · ${money(productUnitPrice(x, v.label))}</option>`).join('')}</select></details>` : '';
+    const calzoneOptions = p.kind === 'calzone' ? `<details class="customization"><summary>Escolher sabor</summary><label>Sabor do calzone (demo)</label><select data-calzone-flavor><option value="">Escolha um sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false).map(x => `<option>${esc(x.name)}</option>`).join('')}</select></details>` : '';
+    const crustOptions = p.kind === 'crust' ? `<details class="customization"><summary>Escolher sabor da borda</summary><select data-crust-flavor><option>Catupiry</option><option>Cheddar</option><option>Chocolate</option><option>Cream cheese</option></select></details>` : '';
     const toppingList = ['Calabresa','Cebola','Frango desfiado','Milho','Bacon','Champignon','Palmito','Tomate','Presunto','Requeijão','Cheddar','Azeitona','Ovo','Brócolis','Costela','Carne seca'];
-    const customPizza = p.kind === 'custom-pizza' ? `<label>Escolha até 5 ingredientes (lista demo)</label><div class="extras-list">${toppingList.map(x => `<div class="extra-option"><label><input data-topping="${esc(x)}" type="checkbox"> ${esc(x)}</label></div>`).join('')}</div>` : '';
+    const customPizza = p.kind === 'custom-pizza' ? `<details class="customization"><summary>Escolher até 5 ingredientes (lista demo)</summary><div class="extras-list">${toppingList.map(x => `<div class="extra-option"><label><input data-topping="${esc(x)}" type="checkbox"> ${esc(x)}</label></div>`).join('')}</div></details>` : '';
     const extras = p.kind === 'acai' ? `<details><summary>Adicionar complementos (valores demonstrativos)</summary><div class="extras-list">${addOns.map(x => `<div class="extra-option"><label><input data-extra-check="${esc(x.id)}" type="checkbox"> ${esc(x.name)}</label><strong>${money(x.variants?.[0]?.price)}</strong></div>`).join('')}</div></details>` : '';
     return `<article class="product-card" data-id="${esc(p.id)}" data-kind="${esc(p.kind||'item')}">${p.image?`<img class="product-thumb" src="${esc(p.image)}" alt="Foto ilustrativa de ${esc(p.name)}" loading="lazy">`:''}<div class="product-group">${esc(p.category)} · ${esc(p.group||'')}</div><h3>${esc(p.name)}</h3>${p.description?`<p class="product-desc">${esc(p.description)}</p>`:''}<label>Opção / tamanho</label><select data-variant>${priceVariants(p)}</select>${pizzaOptions}${calzoneOptions}${crustOptions}${customPizza}${extras}<div class="product-bottom"><span class="price" data-card-price>${money(v.price)}</span><button class="btn" data-add type="button">Adicionar</button></div></article>`;
   }).join('') || '<p class="muted">Não há itens disponíveis nesta categoria.</p>';
