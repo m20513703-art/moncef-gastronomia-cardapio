@@ -14,21 +14,21 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Moncef Gastronomia">
   <style>
-    :root{--ink:#211b1a;--paper:#fbf6ec;--cream:#f2e8d8;--tomato:#c7432f;--gold:#d49a42;--muted:#786d62;--line:#e9ddcc;--white:#fffdf9}
+    :root{--ink:#f7eee8;--paper:#100e0d;--cream:#1b1715;--tomato:#ff6b18;--gold:#ff9b56;--muted:#b5a9a1;--line:#40342d;--white:#1c1816}
     *{box-sizing:border-box}
     html{scroll-behavior:smooth;scroll-padding-top:90px}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
-    .hero{position:relative;overflow:hidden;background:var(--ink);color:var(--paper);padding:56px 20px 48px;text-align:center}
+    .hero{position:relative;overflow:hidden;background:#171311;color:var(--ink);padding:56px 20px 48px;text-align:center}
     .hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(212,154,66,.3);border-radius:50%;width:310px;height:310px;top:-205px;left:-100px;transform:rotate(25deg)}
     .hero:after{width:230px;height:230px;left:auto;right:-80px;top:auto;bottom:-160px}
     .eyebrow{color:#efbd70;text-transform:uppercase;font-size:.72rem;font-weight:800;letter-spacing:.2em;margin:0 0 12px}
     h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.8rem,8vw,5rem);font-weight:500;letter-spacing:-.045em;line-height:.98;margin:0}
     .hero p{max-width:600px;margin:17px auto 0;color:#e4d8c7;font-size:1rem}
     .hero .spark{color:#efbd70}
-    .nav-wrap{position:sticky;top:0;z-index:5;background:rgba(251,246,236,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+    .nav-wrap{position:sticky;top:0;z-index:5;background:rgba(16,14,13,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
     nav{max-width:1100px;margin:auto;display:flex;gap:9px;overflow-x:auto;padding:12px 18px;scrollbar-width:thin}
     nav a{flex:0 0 auto;text-decoration:none;color:var(--ink);font-size:.83rem;font-weight:750;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:var(--white)}
-    nav a:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+    nav a:hover{background:var(--tomato);color:#fff;border-color:var(--tomato)}
     main{max-width:1100px;margin:0 auto;padding:34px 18px 70px}
     .intro{text-align:center;color:var(--muted);font-size:.94rem;margin:0 auto 34px;max-width:670px}
     .section{margin:32px 0 52px;scroll-margin-top:82px}
@@ -48,12 +48,12 @@
     .name{font-weight:800;font-size:.94rem;line-height:1.28}
     .price{white-space:nowrap;font-weight:850;color:var(--tomato);font-size:.94rem}
     .desc{display:block;color:var(--muted);font-size:.81rem;line-height:1.35;margin-top:3px}
-    .pill{display:inline-block;background:#f8ead2;color:#755222;font-size:.72rem;font-weight:800;border-radius:999px;padding:5px 9px;margin:0 5px 6px 0}
+    .pill{display:inline-block;background:#33251a;color:#ffbd82;font-size:.72rem;font-weight:800;border-radius:999px;padding:5px 9px;margin:0 5px 6px 0}
     .price-table{width:100%;border-collapse:collapse;font-size:.89rem;margin-top:9px}
     .price-table th{text-align:left;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;padding:7px 4px;border-bottom:1px solid var(--line)}
     .price-table td{padding:9px 4px;border-bottom:1px dashed var(--line)}
     .price-table td:not(:first-child){text-align:right;font-weight:800;color:var(--tomato);white-space:nowrap}
-    .note{background:#f4e9d9;border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 15px;color:#665544;font-size:.83rem;margin-top:15px}
+    .note{background:#251b15;border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 15px;color:#f0d4bf;font-size:.83rem;margin-top:15px}
     .flavor-list{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
     .flavor-list .items li{font-size:.88rem}
     .extras-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
@@ -93,9 +93,15 @@
     .category-title{font-family:Georgia,"Times New Roman",serif;font-size:1.65rem;font-weight:700;margin:28px 18px 2px}
     .category-desc{color:var(--muted);font-size:.88rem;margin:0 18px 14px}
     .category-action{margin:auto 18px 17px;color:var(--tomato);font-weight:850;font-size:.84rem;display:flex;justify-content:space-between;align-items:center}
+    .info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:36px}
+    .info-card{scroll-margin-top:90px;background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+    .info-card h3{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.4rem;margin:0 0 8px}
+    .info-card p{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+    .info-link{display:inline-block;margin-top:4px;color:var(--tomato);font-weight:850;text-decoration:none}
+    .info-link:hover{text-decoration:underline}
     .photo-disclaimer{text-align:center;color:var(--muted);font-size:.74rem;margin:21px auto 0}
     .back-home{display:inline-flex;align-items:center;gap:8px;margin:0 0 18px;padding:10px 15px;border-radius:999px;border:1px solid var(--line);background:var(--white);color:var(--ink);font-weight:800;text-decoration:none;font-size:.88rem}
-    .back-home:hover{background:var(--ink);color:var(--paper)}
+    .back-home:hover{background:var(--tomato);border-color:var(--tomato);color:#fff}
     main .section{display:none}
     main:has(.section:target) .section:target{display:block}
     main:has(.section:target) .home-screen{display:none}
@@ -103,8 +109,8 @@
     @media(max-width:560px){.hero{min-height:355px}.category-grid{grid-template-columns:1fr;gap:14px}.category-card{min-height:290px}.category-card>img{height:175px}.category-icon{top:147px}.category-title{font-size:1.55rem}.home-screen{margin-bottom:30px}}
     .brand-logo{width:78px;height:78px;object-fit:cover;border:2px solid #e8b54d;border-radius:50%;box-shadow:0 5px 20px rgba(0,0,0,.25);margin-bottom:12px}
     .hero-buttons{display:flex;flex-wrap:wrap;gap:10px}
-    .hero-cta-light{background:#f2e8d8;color:var(--ink)}
-    .hero-cta-light:hover{background:#fff7e9;color:var(--ink)}
+    .hero-cta-light{background:#2b221d;color:#fff2e8}
+    .hero-cta-light:hover{background:#3b2b22;color:#fff}
     .store-panel{display:grid;grid-template-columns:1.05fr .95fr;overflow:hidden;margin:24px 0 0;background:var(--white);border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 28px rgba(69,45,26,.08)}
     .store-panel figure{margin:0;min-height:280px;position:relative}
     .store-panel figure img{display:block;width:100%;height:100%;min-height:280px;object-fit:cover;object-position:center 72%}
@@ -118,7 +124,7 @@
     .contact-number{color:var(--ink)!important}
     .contact-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:6px}
     .contact-actions a{display:inline-flex;text-decoration:none;background:var(--tomato);color:#fff;font-weight:800;font-size:.82rem;padding:10px 13px;border-radius:999px}
-    .contact-actions a:last-child{background:var(--ink)}
+    .contact-actions a:last-child{background:#2b221d}
     .contact-actions a:hover{filter:brightness(1.12)}
     @media(max-width:620px){.store-panel{grid-template-columns:1fr}.store-panel figure,.store-panel figure img{min-height:220px;height:250px}.store-details{padding:21px}.hero-buttons{gap:8px}.hero-cta{font-size:.86rem;padding:11px 14px}}
     .top-contact{max-width:1100px;margin:14px auto 22px;padding:10px;display:grid;grid-template-columns:190px 1fr auto;align-items:center;gap:17px;background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 22px rgba(69,45,26,.07)}
@@ -145,6 +151,14 @@
       <div class="hero-buttons"><a class="hero-cta" href="#categorias">Escolher uma categoria <span aria-hidden="true">↓</span></a></div>
     </div>
   </header>
+  <div class="nav-wrap"><nav aria-label="Atalhos principais">
+    <a href="#categorias">🍽️ Cardápio</a>
+    <a href="#quem-somos">❤️ Quem somos</a>
+    <a href="#como-chegar">📍 Como chegar</a>
+    <a href="https://wa.me/553591543236" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
+    <a href="https://www.instagram.com/moncef_gastronomia/" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+    <a href="#horarios">🕒 Horário de funcionamento</a>
+  </nav></div>
   <section class="top-contact" aria-label="Contato da Moncef Gastronomia">
     <img class="top-facade" src="fachada.jpg" alt="Fachada da Moncef Gastronomia" loading="eager">
     <div class="top-contact-copy"><strong>Moncef Gastronomia</strong><span>Poços de Caldas · MG</span><span class="top-phone">WhatsApp: +55 (35) 9154-3236</span></div>
@@ -159,12 +173,18 @@
       </div>
       <div class="category-grid" aria-label="Categorias do cardápio">
         <a class="category-card" href="#pizzas"><img src="pizza.jpg" alt="Pizza ilustrativa" loading="lazy"><span class="category-icon">🍕</span><span class="category-title">Pizzas</span><span class="category-desc">Tradicionais, especiais, doces e mais</span><span class="category-action">Ver sabores e preços <span aria-hidden="true">→</span></span></a>
+        <a class="category-card" href="#bordas-complementos"><img src="pizza.jpg" alt="Pizza com borda recheada ilustrativa" loading="lazy"><span class="category-icon">🧀</span><span class="category-title">Bordas e complementos</span><span class="category-desc">Bordas recheadas e monte sua pizza</span><span class="category-action">Ver opções e preços <span aria-hidden="true">→</span></span></a>
         <a class="category-card" href="#esfihas"><img src="esfihas.jpg" alt="Esfihas ilustrativas" loading="lazy"><span class="category-icon">🥟</span><span class="category-title">Esfihas</span><span class="category-desc">Tradicionais, gourmet, doces e combos</span><span class="category-action">Ver sabores e preços <span aria-hidden="true">→</span></span></a>
         <a class="category-card" href="#porcoes"><img src="porcoes.jpg" alt="Porções ilustrativas" loading="lazy"><span class="category-icon">🍟</span><span class="category-title">Porções</span><span class="category-desc">Batatas, petiscos e pratos para dividir</span><span class="category-action">Ver opções e preços <span aria-hidden="true">→</span></span></a>
         <a class="category-card" href="#acai"><img src="acai-bebidas.jpg" alt="Açaí ilustrativo" loading="lazy"><span class="category-icon">🍧</span><span class="category-title">Açaí e vitaminas</span><span class="category-desc">Tamanhos, adicionais e vitaminas</span><span class="category-action">Ver opções e preços <span aria-hidden="true">→</span></span></a>
         <a class="category-card" href="#bebidas"><img src="acai-bebidas.jpg" alt="Bebidas ilustrativas" loading="lazy"><span class="category-icon">🥤</span><span class="category-title">Bebidas</span><span class="category-desc">Sucos, refrigerantes, cervejas e vinhos</span><span class="category-action">Ver bebidas e preços <span aria-hidden="true">→</span></span></a>
       </div>
       <p class="photo-disclaimer">As fotos dos produtos são ilustrativas; a apresentação real pode variar.</p>
+      <div class="info-grid" aria-label="Informações da Moncef Gastronomia">
+        <article class="info-card" id="quem-somos"><div class="section-kicker">❤️ Nossa casa</div><h3>Quem somos</h3><p>A Moncef Gastronomia reúne pizzas, esfihas, porções, açaí e bebidas em um cardápio variado. Consulte a equipe para confirmar a disponibilidade dos sabores.</p></article>
+        <article class="info-card" id="como-chegar"><div class="section-kicker">📍 Visite a Moncef</div><h3>Como chegar</h3><p>Chame a equipe no WhatsApp para receber o endereço e a localização atualizados.</p><a class="info-link" href="https://wa.me/553591543236" target="_blank" rel="noopener noreferrer">Pedir localização pelo WhatsApp →</a></article>
+        <article class="info-card" id="horarios"><div class="section-kicker">🕒 Funcionamento</div><h3>Horário de funcionamento</h3><p><strong>Segunda a domingo</strong><br>18h às 23h</p></article>
+      </div>
     </section>
 
     <section class="section" id="pizzas">
@@ -241,9 +261,20 @@
           <li><span class="name">Tentação</span><span class="price">R$ 48 / 80</span><span class="desc">Creme de leite, chocolate ao leite, morango e calda de morango</span></li>
           <li><span class="name">Uva ao Chocolate</span><span class="price">R$ 48 / 80</span><span class="desc">Creme de leite, uva, chocolate ao leite e chocolate branco</span></li>
         </ul></article>
-        <article class="card"><h3>Monte sua pizza</h3><p class="sub">4 fatias · R$ 48 &nbsp;|&nbsp; 8 fatias · R$ 80</p><p>Molho de tomate italiano, muçarela, orégano, azeitonas e mais <strong>5 ingredientes à sua escolha</strong>.</p><h3 style="margin-top:22px">Calzones</h3><p class="sub">Doces ou salgados · escolha entre os sabores de pizza</p><table class="price-table"><tbody><tr><td>Pequeno</td><td>R$ 40</td></tr><tr><td>Grande</td><td>R$ 50</td></tr></tbody></table><h3 style="margin-top:22px">Bordas recheadas</h3><p class="sub">Catupiry · cheddar · chocolate · cream cheese</p><table class="price-table"><thead><tr><th>Tamanho da pizza</th><th>Valor da borda</th></tr></thead><tbody><tr><td>4 fatias</td><td>R$ 9</td></tr><tr><td>8 fatias</td><td>R$ 16</td></tr></tbody></table></article>
+
       </div>
       <a class="back-home back-home-bottom" href="#inicio">← Voltar às categorias</a>
+    </section>
+
+    <section class="section" id="bordas-complementos">
+      <a class="back-home" href="#inicio">← Voltar à página inicial</a>
+      <div class="section-heading"><div><div class="section-kicker">Depois das pizzas</div><h2>🧀 Bordas e complementos</h2></div><div class="hint">Escolha opções para completar seu pedido</div></div>
+      <div class="grid three">
+        <article class="card"><h3>Bordas recheadas</h3><p class="sub">Catupiry · cheddar · chocolate · cream cheese</p><table class="price-table"><thead><tr><th>Tamanho da pizza</th><th>Valor da borda</th></tr></thead><tbody><tr><td>4 fatias</td><td>R$ 9</td></tr><tr><td>8 fatias</td><td>R$ 16</td></tr></tbody></table></article>
+        <article class="card"><h3>Monte sua pizza</h3><p class="sub">4 fatias · R$ 48 &nbsp;|&nbsp; 8 fatias · R$ 80</p><p>Molho de tomate italiano, muçarela, orégano, azeitonas e mais <strong>5 ingredientes à sua escolha</strong>.</p></article>
+        <article class="card"><h3>Calzones</h3><p class="sub">Doces ou salgados · escolha entre os sabores de pizza</p><table class="price-table"><tbody><tr><td>Pequeno</td><td>R$ 40</td></tr><tr><td>Grande</td><td>R$ 50</td></tr></tbody></table></article>
+      </div>
+      <a class="back-home back-home-bottom" href="#inicio">← Voltar à página inicial</a>
     </section>
 
     <section class="section" id="esfihas">

@@ -17,9 +17,10 @@ async function boot() {
   state = existing && Array.isArray(existing.products) ? existing : {
     products: catalog,
     orders: [],
-    settings: { openTime: '00:00', closeTime: '23:59', deliveryFee: 0, isOpen: true }
+    settings: { openTime: '18:00', closeTime: '23:00', deliveryFee: 0, isOpen: true }
   };
-  if (!state.settings) state.settings = { openTime: '00:00', closeTime: '23:59', deliveryFee: 0, isOpen: true };
+  if (!state.settings) state.settings = { openTime: '18:00', closeTime: '23:00', deliveryFee: 0, isOpen: true };
+  else if (state.settings.openTime === '00:00' && state.settings.closeTime === '23:59') { state.settings.openTime = '18:00'; state.settings.closeTime = '23:00'; }
   if (!Array.isArray(state.orders)) state.orders = [];
   save();
   if (document.body.dataset.page === 'delivery') initDelivery();
@@ -162,14 +163,14 @@ function renderCart() {
 }
 function isOpenNow() {
   const s=state.settings||{}; if(s.isOpen===false) return false;
-  const open=s.openTime||'00:00', close=s.closeTime||'23:59';
+  const open=s.openTime||'18:00', close=s.closeTime||'23:00';
   const now=new Date(); const mins=now.getHours()*60+now.getMinutes();
   const a=Number(open.slice(0,2))*60+Number(open.slice(3,5)); const b=Number(close.slice(0,2))*60+Number(close.slice(3,5));
   return a<=b ? mins>=a&&mins<=b : mins>=a||mins<=b;
 }
 function renderStoreNotice() {
   const s=state.settings||{}; const open=isOpenNow();
-  const msg=`${open?'🟢 Aberto na demonstração':'🔴 Fechado / fora do horário'} · Horário de exemplo: ${esc(s.openTime||'00:00')}–${esc(s.closeTime||'23:59')} · Entrega: ${money(s.deliveryFee||0)} (valor demonstrativo; confirmar).`;
+  const msg=`${open?'🟢 Aberto na demonstração':'🔴 Fechado / fora do horário'} · Funcionamento informado: ${esc(s.openTime||'18:00')}–${esc(s.closeTime||'23:00')} · Entrega: ${money(s.deliveryFee||0)} (taxa demonstrativa; confirmar).`;
   const el=document.getElementById('storeNotice');if(el){el.textContent=msg;el.classList.toggle('closed',!open);}
   const pdv=document.getElementById('pdvStoreNotice');if(pdv){pdv.textContent=msg;pdv.classList.toggle('closed',!open);}
 }
@@ -247,7 +248,7 @@ function renderProductRows() {
 }
 function setupSettings() {
   const s=state.settings||{};
-  document.getElementById('openTime').value=s.openTime||'00:00';document.getElementById('closeTime').value=s.closeTime||'23:59';document.getElementById('deliveryFeeInput').value=Number(s.deliveryFee||0);document.getElementById('storeOpenToggle').value=String(s.isOpen!==false);
-  document.getElementById('settingsForm').addEventListener('submit',e=>{e.preventDefault();state.settings={openTime:document.getElementById('openTime').value||'00:00',closeTime:document.getElementById('closeTime').value||'23:59',deliveryFee:Number(document.getElementById('deliveryFeeInput').value||0),isOpen:document.getElementById('storeOpenToggle').value==='true'};save();renderStoreNotice();alert('Configuração salva apenas neste navegador.');});
+  document.getElementById('openTime').value=s.openTime||'18:00';document.getElementById('closeTime').value=s.closeTime||'23:00';document.getElementById('deliveryFeeInput').value=Number(s.deliveryFee||0);document.getElementById('storeOpenToggle').value=String(s.isOpen!==false);
+  document.getElementById('settingsForm').addEventListener('submit',e=>{e.preventDefault();state.settings={openTime:document.getElementById('openTime').value||'18:00',closeTime:document.getElementById('closeTime').value||'23:00',deliveryFee:Number(document.getElementById('deliveryFeeInput').value||0),isOpen:document.getElementById('storeOpenToggle').value==='true'};save();renderStoreNotice();alert('Configuração salva apenas neste navegador.');});
 }
 boot().catch(error=>{console.error(error);document.body.insertAdjacentHTML('afterbegin','<div class="demo-banner">Falha ao carregar o cardápio. Abra a página pelo GitHub Pages, não como arquivo local.</div>');});

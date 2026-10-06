@@ -12,4 +12,4 @@
 
 A demonstração grava produtos, pedidos e configurações no armazenamento local do navegador. As telas sincronizam apenas no mesmo navegador/aparelho; não há servidor, banco de dados, cobrança, envio à loja nem autenticação do PDV. Não use dados reais de clientes. Para operação real em vários aparelhos, receber pedidos e proteger o PDV, será necessário backend e banco de dados.
 
-Os dados de horários e taxa vêm com valores de exemplo e precisam ser confirmados pela Moncef. A divisão de pizzas meio a meio usa temporariamente o preço do sabor mais caro; confirmar a regra comercial. Fotos de produtos são ilustrativas.
+Horário de funcionamento informado pelo usuário: todos os dias, das 18h às 23h. A taxa de entrega ainda usa R$ 0,00 como exemplo e precisa de confirmação. A divisão de pizzas meio a meio usa temporariamente o preço do sabor mais caro; confirmar a regra comercial. Fotos de produtos são ilustrativas.
