@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cardápio e delivery | Moncef Gastronomia</title>
-  <link rel="stylesheet" href="delivery-pdv.css?v=20261006c">
-  <script src="app.js?v=20261006c" defer></script>
+  <link rel="stylesheet" href="delivery-pdv.css?v=20261006d">
+  <script src="app.js?v=20261006d" defer></script>
 </head>
 <body data-page="delivery">
   <header class="topbar">
@@ -20,7 +20,7 @@
       <div class="hero-copy">
         <p class="eyebrow">CARDÁPIO E DELIVERY</p>
         <h1>Moncef<br><span>Gastronomia</span></h1>
-        <p>Escolha uma categoria, personalize os produtos e monte seu pedido. Ao finalizar, você confere a mensagem no WhatsApp antes de enviá-la para a loja.</p>
+        <p>Escolha uma categoria, personalize os produtos e monte seu pedido para a fila do PDV.</p>
         <div id="storeNotice" class="notice">Carregando disponibilidade...</div>
       </div>
       <img class="hero-showcase" src="fachada.jpg" alt="Fachada da Moncef Gastronomia">
@@ -37,22 +37,22 @@
         <div class="totals">
           <div class="total-row"><span>Subtotal dos itens</span><strong id="cartSubtotal">R$ 0,00</strong></div>
           <div class="total-row"><span>Taxa de entrega</span><strong id="deliveryFee">A confirmar</strong></div>
-          <div class="total-row total"><span>Total final</span><strong id="cartTotal">A confirmar no WhatsApp</strong></div>
+          <div class="total-row total"><span>Total final</span><strong id="cartTotal">A confirmar pelo PDV</strong></div>
         </div>
-        <button id="checkoutButton" class="btn" type="button">Continuar no WhatsApp</button>
-        <p class="small-note">A taxa de entrega e o valor final são confirmados pela equipe. O pedido só chega à loja quando você tocar em <strong>Enviar</strong> no WhatsApp.</p>
+        <button id="checkoutButton" class="btn" type="button">Enviar pedido ao PDV</button>
+        <p class="small-note">Sem banco online, o pedido só aparece no PDV se cardápio e PDV forem usados no mesmo navegador e aparelho.</p>
       </aside>
     </div>
 
     <section id="historico" class="history-section" aria-labelledby="historyHeading" style="margin-top:34px;scroll-margin-top:20px">
-      <div class="section-head"><div><h2 id="historyHeading">Histórico de pedidos</h2><span class="muted">Pedidos preparados neste navegador. O histórico fica salvo somente neste aparelho.</span></div></div>
+      <div class="section-head"><div><h2 id="historyHeading">Histórico de pedidos</h2><span class="muted">Histórico e status ficam salvos neste aparelho e navegador.</span></div></div>
       <div id="orderHistoryList" class="orders-grid"><div class="panel muted">Carregando histórico...</div></div>
     </section>
   </main>
   <dialog id="checkoutModal" class="modal">
     <div class="modal-head"><h2>Dados para entrega</h2><button class="modal-close" type="button" data-close="checkoutModal" aria-label="Fechar">×</button></div>
     <form id="checkoutForm" class="modal-body">
-      <p class="notice">Ao continuar, abriremos uma conversa com o pedido preenchido. Confira os dados e toque em <strong>Enviar</strong> no WhatsApp para encaminhar à Moncef. A taxa de entrega e o total final serão confirmados pela equipe.</p>
+      <p class="notice">O pedido será registrado na fila do PDV neste aparelho. Sem banco online, ele só aparece na loja se o cardápio e o PDV estiverem no mesmo navegador. A taxa e o total final serão confirmados pela equipe.</p>
       <div class="form-grid">
         <div class="field"><label for="customerName">Nome</label><input id="customerName" name="customerName" required autocomplete="name"></div>
         <div class="field"><label for="customerPhone">Telefone para contato</label><input id="customerPhone" name="customerPhone" type="tel" required autocomplete="tel" placeholder="(35) 99999-9999"></div>
@@ -61,10 +61,10 @@
         <div class="field"><label for="changeFor">Troco para (se necessário)</label><input id="changeFor" name="changeFor" placeholder="Ex.: R$ 100" inputmode="decimal"></div>
         <div class="field wide"><label for="orderNotes">Observações</label><textarea id="orderNotes" name="orderNotes" placeholder="Instruções para a entrega ou para o preparo"></textarea></div>
       </div>
-      <button class="btn" type="submit">Abrir pedido no WhatsApp</button>
+      <button class="btn" type="submit">Registrar pedido no PDV</button>
       <div id="orderConfirmation" class="success-box hide"></div>
     </form>
   </dialog>
-  <footer class="footer-note">O pedido é encaminhado à Moncef pelo WhatsApp somente depois que você tocar em Enviar. O histórico fica salvo neste navegador e não sincroniza com outros aparelhos. O PDV separado é uma demonstração local e não recebe automaticamente pedidos do WhatsApp.</footer>
+  <footer class="footer-note">Sem banco online, pedidos, status e dados de entrega ficam salvos somente neste navegador/aparelho. O PDV só recebe os pedidos quando o cardápio e o PDV forem usados no mesmo navegador; aparelhos diferentes não sincronizam.</footer>
 </body>
 </html>

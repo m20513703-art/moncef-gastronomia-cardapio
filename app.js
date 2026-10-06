@@ -33,7 +33,7 @@ async function boot() {
 }
 function refreshPage() {
   state = read() || state;
-  if (document.body.dataset.page === 'delivery') { renderProducts(); renderCart(); renderStoreNotice(); }
+  if (document.body.dataset.page === 'delivery') { renderProducts(); renderCart(); renderStoreNotice(); renderOrderHistory(); }
   else { renderOrders(); renderProductRows(); renderStoreNotice(); }
 }
 function productUnitPrice(product, label) {
@@ -86,25 +86,20 @@ function initDelivery() {
     const id = `MON-${Date.now().toString().slice(-6)}`;
     const items = cart.map(x => ({ ...x }));
     const subtotalKnown = items.reduce((sum, line) => sum + (line.pricePending ? 0 : line.unitPrice * line.qty), 0);
-    const messageLines = [
-      'Olá! Quero fazer um pedido pelo cardápio online da Moncef Gastronomia.',
-      `Pedido: ${id}`,
-      `Nome: ${data.get('customerName')}`,
-      `WhatsApp/telefone: ${data.get('customerPhone')}`,
-      `Endereço de entrega: ${data.get('customerAddress')}`,
-      `Pagamento desejado: ${data.get('paymentMethod')}`,
-      data.get('changeFor') ? `Troco para: ${data.get('changeFor')}` : '',
-      'Itens:',
-      ...items.map(line => `${line.qty}× ${line.name} (${line.variant})${line.description ? ` — ${line.description}` : ''} — ${line.pricePending ? 'preço a confirmar' : money(line.unitPrice * line.qty)}`),
-      `Subtotal de itens com preço definido: ${money(subtotalKnown)}`,
-      'Taxa de entrega e total final: confirmar com a equipe.',
-      data.get('orderNotes') ? `Observações: ${data.get('orderNotes')}` : ''
-    ].filter(Boolean);
-    const historyItem = { id, createdAt: new Date().toISOString(), items, subtotalKnown, payment: String(data.get('paymentMethod') || '') };
-    saveOrderHistory([historyItem, ...readOrderHistory()].slice(0, 50));
-    cart = []; renderCart(); renderOrderHistory(); e.currentTarget.reset();
-    document.getElementById('checkoutModal').close();
-    window.location.href = `https://wa.me/553591543236?text=${encodeURIComponent(messageLines.join('\n'))}`;
+    const order = {
+      id, channel:'Delivery', status:'Novo', createdAt:new Date().toISOString(),
+      customer:{name:String(data.get('customerName')||''),phone:String(data.get('customerPhone')||''),address:String(data.get('customerAddress')||''),notes:String(data.get('orderNotes')||'')},
+      payment:String(data.get('paymentMethod')||''), changeFor:String(data.get('changeFor')||''), items,
+      subtotal:subtotalKnown, deliveryFee:0, total:subtotalKnown, feePending:true, totalPending:true,
+      pricePending:items.some(line=>line.pricePending)
+    };
+    state.orders.unshift(order); save();
+    const historyItem={id,createdAt:order.createdAt,items,subtotalKnown,payment:order.payment};
+    saveOrderHistory([historyItem,...readOrderHistory()].slice(0,50));
+    cart=[]; renderCart(); renderOrderHistory(); renderOrders();
+    const box=document.getElementById('orderConfirmation');
+    box.innerHTML=`<strong>Pedido ${esc(id)} registrado na fila local do PDV.</strong><br>Ele só aparece no PDV aberto neste mesmo navegador e aparelho. Sem banco online, não chega ao PDV em outro dispositivo.`;
+    box.classList.remove('hide'); e.currentTarget.reset();
   });
   document.getElementById('orderHistoryList').addEventListener('click', e => {
     const button = e.target.closest('[data-repeat-order]'); if (!button) return;
@@ -152,7 +147,7 @@ function addProductToCart(id, card) {
   let unitPrice = productUnitPrice(p, variant); let name = p.name; let description = p.description || ''; let pricePending = false;
   const flavor2 = card.querySelector('[data-flavor2]')?.value;
   if (flavor2) {
-    const p2 = state.products.find(x => x.id === flavor2); if (p2) { pricePending = true; unitPrice = 0; name += ` meio a meio: ${p2.name}`; description += ' · Valor final da combinação a confirmar pelo WhatsApp.'; }
+    const p2 = state.products.find(x => x.id === flavor2); if (p2) { pricePending = true; unitPrice = 0; name += ` meio a meio: ${p2.name}`; description += ' · Valor final da combinação a confirmar pela equipe.'; }
   }
   const calzoneFlavor=card.querySelector('[data-calzone-flavor]')?.value;
   if(p.kind==='calzone') { if(!calzoneFlavor){alert('Escolha o sabor do calzone.');return;} description+=` · Sabor: ${calzoneFlavor}`; }
@@ -174,14 +169,17 @@ function renderCart() {
   if (!cart.length) root.innerHTML = '<div class="cart-empty">Seu carrinho está vazio.</div>';
   else root.innerHTML = cart.map((x,i)=>`<div class="cart-line"><div class="cart-line-head"><span>${esc(x.qty)}× ${esc(x.name)}</span><strong>${x.pricePending?'Preço a confirmar':money(x.unitPrice*x.qty)}</strong></div><small>${esc(x.variant)}${x.description?` · ${esc(x.description)}`:''}</small><div class="cart-line-controls"><button type="button" data-cart-action="minus" data-index="${i}" aria-label="Diminuir">−</button><span>${x.qty}</span><button type="button" data-cart-action="plus" data-index="${i}" aria-label="Aumentar">+</button><button type="button" data-cart-action="remove" data-index="${i}">Remover</button></div></div>`).join('');
   const subtotal = cart.reduce((n,x)=>n+(x.pricePending?0:x.unitPrice*x.qty),0);
-  document.getElementById('cartSubtotal').textContent=money(subtotal);document.getElementById('deliveryFee').textContent='A confirmar';document.getElementById('cartTotal').textContent='A confirmar no WhatsApp';
+  document.getElementById('cartSubtotal').textContent=money(subtotal);document.getElementById('deliveryFee').textContent='A confirmar';document.getElementById('cartTotal').textContent='A confirmar pelo PDV';
   const button=document.getElementById('checkoutButton');button.disabled=!cart.length||!isOpenNow();button.title=!isOpenNow()?'A loja está fechada; pedidos disponíveis todos os dias, das 18h às 23h.':'';
 }
 function renderOrderHistory() {
   const root=document.getElementById('orderHistoryList'); if(!root) return;
   const orders=readOrderHistory();
-  if(!orders.length){root.innerHTML='<div class="panel muted">Seus pedidos preparados neste aparelho vão aparecer aqui.</div>';return;}
-  root.innerHTML=orders.map(order=>`<article class="order-card"><div class="product-group">Pedido ${esc(order.id)}</div><h3>Solicitação <span class="status-chip">Preparada para WhatsApp</span></h3><div class="order-meta">${new Date(order.createdAt).toLocaleString('pt-BR')} · salvo neste aparelho</div><div class="order-items">${(order.items||[]).map(line=>`<div>${esc(line.qty)}× ${esc(line.name)} (${esc(line.variant)}) — ${line.pricePending?'preço a confirmar':money(line.unitPrice*line.qty)}</div>${line.description?`<small class="muted">${esc(line.description)}</small>`:''}`).join('')}<div class="total-row"><span>Subtotal com preço definido</span><strong>${money(order.subtotalKnown||0)}</strong></div><small class="muted">A taxa e o valor final são confirmados pela Moncef. Este registro não confirma que a mensagem foi enviada.</small></div><button class="btn secondary" type="button" data-repeat-order="${esc(order.id)}">Repetir pedido</button></article>`).join('');
+  if(!orders.length){root.innerHTML='<div class="panel muted">Seus pedidos ficam salvos neste aparelho e aparecem aqui.</div>';return;}
+  root.innerHTML=orders.map(order=>{
+    const liveOrder=state.orders.find(x=>x.id===order.id); const status=liveOrder?.status||'Registrado neste aparelho';
+    return `<article class="order-card"><div class="product-group">Pedido ${esc(order.id)}</div><h3>Pedido de delivery <span class="status-chip">${esc(status)}</span></h3><div class="order-meta">${new Date(order.createdAt).toLocaleString('pt-BR')} · salvo neste aparelho</div><div class="order-items">${(order.items||[]).map(line=>`<div>${esc(line.qty)}× ${esc(line.name)} (${esc(line.variant)}) — ${line.pricePending?'preço a confirmar':money(line.unitPrice*line.qty)}</div>${line.description?`<small class="muted">${esc(line.description)}</small>`:''}`).join('')}<div class="total-row"><span>Subtotal com preço definido</span><strong>${money(order.subtotalKnown||0)}</strong></div><small class="muted">A taxa e o total final precisam ser confirmados pela equipe.</small></div><button class="btn secondary" type="button" data-repeat-order="${esc(order.id)}">Repetir pedido</button></article>`;
+  }).join('');
 }
 function isOpenNow() {
   const s=state.settings||{}; if(s.isOpen===false) return false; const open=s.openTime||'18:00', close=s.closeTime||'23:00';
@@ -192,20 +190,20 @@ function isOpenNow() {
 }
 function renderStoreNotice() {
   const s=state.settings||{}; const open=isOpenNow();
-  const msg=`${open?'🟢 Aberto agora':'🔴 Fechado'} · Todos os dias, ${esc(s.openTime||'18:00')}–${esc(s.closeTime||'23:00')} · Taxa de entrega a confirmar no WhatsApp.`;
+  const msg=`${open?'🟢 Aberto agora':'🔴 Fechado'} · Todos os dias, ${esc(s.openTime||'18:00')}–${esc(s.closeTime||'23:00')} · Taxa de entrega a confirmar pela equipe.`;
   const el=document.getElementById('storeNotice');if(el){el.textContent=msg;el.classList.toggle('closed',!open);}
   const pdv=document.getElementById('pdvStoreNotice');if(pdv){pdv.textContent=msg;pdv.classList.toggle('closed',!open);}
 }
 function initPdv() {
   renderOrders(); renderProductRows(); renderStoreNotice(); setupTabs(); setupSale(); setupProducts(); setupSettings();
-  document.getElementById('clearDemoOrders').addEventListener('click',()=>{if(confirm('Apagar os pedidos desta demonstração deste navegador?')){state.orders=[];save();renderOrders();}});
+  document.getElementById('clearDemoOrders').addEventListener('click',()=>{if(confirm('Apagar os pedidos salvos neste navegador?')){state.orders=[];save();renderOrders();}});
 }
 function setupTabs() {
   document.querySelector('.pdv-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;document.querySelectorAll('.pdv-tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.pdv-view').forEach(x=>x.hidden=x.id!==`view-${b.dataset.tab}`);if(b.dataset.tab==='sale')fillSaleProducts();});
 }
 function renderOrders() {
   const root=document.getElementById('ordersList');if(!root)return;
-  root.innerHTML=state.orders.length?state.orders.map(o=>`<article class="order-card"><div class="product-group">${esc(o.channel)} · ${esc(o.id)}</div><h3>${esc(o.customer?.name||'Venda balcão')} <span class="status-chip ${o.status==='Concluído'?'green':o.status==='Cancelado'?'red':''}">${esc(o.status)}</span></h3><div class="order-meta">${new Date(o.createdAt).toLocaleString('pt-BR')} · ${esc(o.payment||'Pagamento não informado')}</div>${o.customer?.phone?`<div>Telefone: ${esc(o.customer.phone)}</div>`:''}${o.customer?.address?`<div>Endereço: ${esc(o.customer.address)}</div>`:''}${o.customer?.notes?`<div class="muted">Obs.: ${esc(o.customer.notes)}</div>`:''}<div class="order-items">${(o.items||[]).map(x=>`<div>${esc(x.qty)}× ${esc(x.name)} (${esc(x.variant)}) — ${money(x.unitPrice*x.qty)}</div>${x.description?`<small class="muted">${esc(x.description)}</small>`:''}`).join('')}<div class="totals"><div class="total-row"><span>Subtotal</span><strong>${money(o.subtotal)}</strong></div><div class="total-row"><span>Entrega</span><strong>${money(o.deliveryFee)}</strong></div><div class="total-row total"><span>Total</span><strong>${money(o.total)}</strong></div></div></div><div class="order-actions"><label class="small-note">Status <select data-order-status="${esc(o.id)}">${STATUS.map(st=>`<option ${o.status===st?'selected':''}>${esc(st)}</option>`).join('')}</select></label></div></article>`).join(''):'<div class="panel muted">Nenhum registro neste PDV. Solicitações do cardápio são enviadas pelo WhatsApp e não aparecem automaticamente nesta fila.</div>';
+  root.innerHTML=state.orders.length?state.orders.map(o=>`<article class="order-card"><div class="product-group">${esc(o.channel)} · ${esc(o.id)}</div><h3>${esc(o.customer?.name||'Venda balcão')} <span class="status-chip ${o.status==='Concluído'?'green':o.status==='Cancelado'?'red':''}">${esc(o.status)}</span></h3><div class="order-meta">${new Date(o.createdAt).toLocaleString('pt-BR')} · ${esc(o.payment||'Pagamento não informado')}</div>${o.customer?.phone?`<div>Telefone: ${esc(o.customer.phone)}</div>`:''}${o.customer?.address?`<div>Endereço: ${esc(o.customer.address)}</div>`:''}${o.changeFor?`<div>Troco para: ${esc(o.changeFor)}</div>`:''}${o.customer?.notes?`<div class="muted">Obs.: ${esc(o.customer.notes)}</div>`:''}<div class="order-items">${(o.items||[]).map(x=>`<div>${esc(x.qty)}× ${esc(x.name)} (${esc(x.variant)}) — ${x.pricePending?'A confirmar':money(x.unitPrice*x.qty)}</div>${x.description?`<small class="muted">${esc(x.description)}</small>`:''}`).join('')}<div class="totals"><div class="total-row"><span>Subtotal com preço definido</span><strong>${money(o.subtotal)}</strong></div><div class="total-row"><span>Entrega</span><strong>${o.feePending?'A confirmar':money(o.deliveryFee)}</strong></div><div class="total-row total"><span>Total final</span><strong>${o.totalPending?'A confirmar':money(o.total)}</strong></div></div></div><div class="order-actions"><label class="small-note">Status <select data-order-status="${esc(o.id)}">${STATUS.map(st=>`<option ${o.status===st?'selected':''}>${esc(st)}</option>`).join('')}</select></label></div></article>`).join(''):'<div class="panel muted">Nenhum pedido na fila local. Sem banco online, o PDV só recebe pedidos do cardápio aberto no mesmo navegador e aparelho.</div>';
   root.querySelectorAll('[data-order-status]').forEach(sel=>sel.addEventListener('change',()=>{const order=state.orders.find(x=>x.id===sel.dataset.orderStatus);if(order){order.status=sel.value;save();renderOrders();}}));
 }
 function fillSaleProducts() {
@@ -231,7 +229,7 @@ function setupSale() {
     if(!saleCart.length){alert('Adicione pelo menos um produto.');return;}
     const subtotal=saleCart.reduce((a,x)=>a+x.qty*x.unitPrice,0);
     const o={id:`BAL-${Date.now().toString().slice(-6)}`,channel:'Balcão',status:'Concluído',createdAt:new Date().toISOString(),customer:{name:document.getElementById('saleCustomer').value||'Venda balcão'},payment:'Não informado',items:saleCart.map(x=>({...x})),subtotal,deliveryFee:0,total:subtotal,demo:true};
-    state.orders.unshift(o);save();saleCart=[];renderSaleCart();renderOrders();document.getElementById('saleCustomer').value='';alert(`Venda demo ${o.id} registrada.`);
+    state.orders.unshift(o);save();saleCart=[];renderSaleCart();renderOrders();document.getElementById('saleCustomer').value='';alert(`Venda ${o.id} registrada.`);
   });
 }
 function renderSaleCart() {
@@ -261,7 +259,7 @@ function setupProducts() {
     if(b.dataset.productAction==='edit'){
       document.getElementById('editProductId').value=p.id;document.getElementById('productName').value=p.name;document.getElementById('productCategory').value=p.category;document.getElementById('productGroup').value=p.group||'';document.getElementById('productImage').value=p.image||'';document.getElementById('productDescription').value=p.description||'';document.getElementById('productVariants').value=(p.variants||[]).map(v=>`${v.label}:${v.price}`).join('; ');document.getElementById('saveProduct').textContent='Atualizar produto';document.querySelector('[data-tab="products"]').click();window.scrollTo({top:0,behavior:'smooth'});
     }
-    if(b.dataset.productAction==='delete'&&confirm(`Remover “${p.name}” do cardápio desta demonstração?`)){state.products=state.products.filter(x=>x.id!==p.id);save();renderProductRows();}
+    if(b.dataset.productAction==='delete'&&confirm(`Remover “${p.name}” do cardápio deste navegador?`)){state.products=state.products.filter(x=>x.id!==p.id);save();renderProductRows();}
   });
 }
 function renderProductRows() {
