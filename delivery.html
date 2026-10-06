@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cardápio e delivery | Moncef Gastronomia</title>
-  <link rel="stylesheet" href="delivery-pdv.css?v=20261006d">
-  <script src="app.js?v=20261006d" defer></script>
+  <link rel="stylesheet" href="delivery-pdv.css?v=20261006e">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js?v=20261006e" defer></script>
 </head>
 <body data-page="delivery">
   <header class="topbar">
@@ -40,19 +41,19 @@
           <div class="total-row total"><span>Total final</span><strong id="cartTotal">A confirmar pelo PDV</strong></div>
         </div>
         <button id="checkoutButton" class="btn" type="button">Enviar pedido ao PDV</button>
-        <p class="small-note">Sem banco online, o pedido só aparece no PDV se cardápio e PDV forem usados no mesmo navegador e aparelho.</p>
+        <p class="small-note">Seu pedido é registrado online e enviado diretamente à fila do PDV.</p>
       </aside>
     </div>
 
     <section id="historico" class="history-section" aria-labelledby="historyHeading" style="margin-top:34px;scroll-margin-top:20px">
-      <div class="section-head"><div><h2 id="historyHeading">Histórico de pedidos</h2><span class="muted">Histórico e status ficam salvos neste aparelho e navegador.</span></div></div>
+      <div class="section-head"><div><h2 id="historyHeading">Histórico de pedidos</h2><span class="muted">O status é atualizado a partir da fila online do PDV.</span></div></div>
       <div id="orderHistoryList" class="orders-grid"><div class="panel muted">Carregando histórico...</div></div>
     </section>
   </main>
   <dialog id="checkoutModal" class="modal">
     <div class="modal-head"><h2>Dados para entrega</h2><button class="modal-close" type="button" data-close="checkoutModal" aria-label="Fechar">×</button></div>
     <form id="checkoutForm" class="modal-body">
-      <p class="notice">O pedido será registrado na fila do PDV neste aparelho. Sem banco online, ele só aparece na loja se o cardápio e o PDV estiverem no mesmo navegador. A taxa e o total final serão confirmados pela equipe.</p>
+      <p class="notice">O pedido será registrado online e aparecerá no PDV da Moncef. A taxa e o total final serão confirmados pela equipe.</p>
       <div class="form-grid">
         <div class="field"><label for="customerName">Nome</label><input id="customerName" name="customerName" required autocomplete="name"></div>
         <div class="field"><label for="customerPhone">Telefone para contato</label><input id="customerPhone" name="customerPhone" type="tel" required autocomplete="tel" placeholder="(35) 99999-9999"></div>
@@ -65,6 +66,6 @@
       <div id="orderConfirmation" class="success-box hide"></div>
     </form>
   </dialog>
-  <footer class="footer-note">Sem banco online, pedidos, status e dados de entrega ficam salvos somente neste navegador/aparelho. O PDV só recebe os pedidos quando o cardápio e o PDV forem usados no mesmo navegador; aparelhos diferentes não sincronizam.</footer>
+  <footer class="footer-note">Pedidos são sincronizados com o PDV. O histórico e a chave privada de acompanhamento ficam armazenados apenas neste navegador.</footer>
 </body>
 </html>

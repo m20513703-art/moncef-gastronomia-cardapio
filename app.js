@@ -1,274 +1,52 @@
-const STORE_KEY = 'moncef_delivery_pdv_demo_v1';
+const SUPABASE_URL = 'https://uhkxgicwpfigapjuifsn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ts80rhJfUqlqKHcy8tzXPg_hWIOFl9E';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const ORDER_HISTORY_KEY = 'moncef_customer_order_history_v1';
-const readOrderHistory = () => { try { const value=JSON.parse(localStorage.getItem(ORDER_HISTORY_KEY)||'[]'); return Array.isArray(value)?value:[]; } catch { return []; } };
-const saveOrderHistory = value => localStorage.setItem(ORDER_HISTORY_KEY, JSON.stringify(value));
 const STATUS = ['Novo', 'Em preparo', 'Pronto', 'Saiu para entrega', 'Concluído', 'Cancelado'];
 const money = n => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(n || 0));
 const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
-const read = () => { try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch { return null; } };
-const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(state));
-let state = null;
-let catalog = [];
-let cart = [];
-let saleCart = [];
-let activeCategory = 'Pizzas';
-
-async function boot() {
-  const response = await fetch('catalog.json');
-  catalog = await response.json();
-  const existing = read();
-  state = existing && Array.isArray(existing.products) ? existing : {
-    products: catalog,
-    orders: [],
-    settings: { openTime: '18:00', closeTime: '23:00', deliveryFee: 0, isOpen: true }
-  };
-  if (!state.settings) state.settings = { openTime: '18:00', closeTime: '23:00', deliveryFee: 0, isOpen: true };
-  else if (state.settings.openTime === '00:00' && state.settings.closeTime === '23:59') { state.settings.openTime = '18:00'; state.settings.closeTime = '23:00'; }
-  if (!Array.isArray(state.orders)) state.orders = [];
-  save();
-  if (document.body.dataset.page === 'delivery') initDelivery();
-  else initPdv();
-  window.addEventListener('storage', e => { if (e.key === STORE_KEY) { state = read() || state; refreshPage(); } });
-  window.addEventListener('focus', refreshPage);
-}
-function refreshPage() {
-  state = read() || state;
-  if (document.body.dataset.page === 'delivery') { renderProducts(); renderCart(); renderStoreNotice(); renderOrderHistory(); }
-  else { renderOrders(); renderProductRows(); renderStoreNotice(); }
-}
-function productUnitPrice(product, label) {
-  const v = (product.variants || []).find(x => x.label === label) || (product.variants || [])[0];
-  return Number(v?.price || 0);
-}
-function priceVariants(product) {
-  return (product.variants || []).map(v => `<option value="${esc(v.label)}">${esc(v.label)} · ${money(v.price)}</option>`).join('');
-}
-function initDelivery() {
-  renderCategories(); renderProducts(); renderCart(); renderStoreNotice(); renderOrderHistory();
-  document.getElementById('categoryTabs').addEventListener('click', e => {
-    const button = e.target.closest('[data-category]'); if (!button) return;
-    activeCategory = button.dataset.category;
-    document.querySelectorAll('#categoryTabs button').forEach(b => b.classList.toggle('active', b === button));
-    renderProducts();
-  });
-  document.getElementById('products').addEventListener('change', e => {
-    if (e.target.matches('[data-variant]')) updateCardPrice(e.target.closest('.product-card'));
-    if (e.target.matches('[data-flavor2]')) updateCardPrice(e.target.closest('.product-card'));
-    if (e.target.matches('[data-topping]')) {
-      const card=e.target.closest('.product-card');
-      if(card.querySelectorAll('[data-topping]:checked').length>5){e.target.checked=false;alert('Escolha até cinco ingredientes.');}
-    }
-    if (e.target.matches('[data-extra-check]')) updateCardPrice(e.target.closest('.product-card'));
-  });
-  document.getElementById('products').addEventListener('click', e => {
-    const button = e.target.closest('[data-add]'); if (!button) return;
-    const card = button.closest('.product-card'); addProductToCart(card.dataset.id, card);
-  });
-  document.getElementById('cartItems').addEventListener('click', e => {
-    const control = e.target.closest('[data-cart-action]'); if (!control) return;
-    const i = Number(control.dataset.index); const action = control.dataset.cartAction;
-    if (!cart[i]) return;
-    if (action === 'plus') cart[i].qty++;
-    if (action === 'minus') cart[i].qty--;
-    if (action === 'remove' || cart[i].qty <= 0) cart.splice(i, 1);
-    renderCart();
-  });
-  document.getElementById('checkoutButton').addEventListener('click', () => {
-    if (!cart.length) return;
-    if (!isOpenNow()) { renderStoreNotice(); return; }
-    document.getElementById('orderConfirmation').classList.add('hide');
-    document.getElementById('checkoutModal').showModal();
-  });
-  document.getElementById('checkoutForm').addEventListener('submit', e => {
-    e.preventDefault();
-    if (!cart.length || !isOpenNow()) { alert('A loja está fechada ou o carrinho está vazio.'); return; }
-    const data = new FormData(e.currentTarget);
-    const id = `MON-${Date.now().toString().slice(-6)}`;
-    const items = cart.map(x => ({ ...x }));
-    const subtotalKnown = items.reduce((sum, line) => sum + (line.pricePending ? 0 : line.unitPrice * line.qty), 0);
-    const order = {
-      id, channel:'Delivery', status:'Novo', createdAt:new Date().toISOString(),
-      customer:{name:String(data.get('customerName')||''),phone:String(data.get('customerPhone')||''),address:String(data.get('customerAddress')||''),notes:String(data.get('orderNotes')||'')},
-      payment:String(data.get('paymentMethod')||''), changeFor:String(data.get('changeFor')||''), items,
-      subtotal:subtotalKnown, deliveryFee:0, total:subtotalKnown, feePending:true, totalPending:true,
-      pricePending:items.some(line=>line.pricePending)
-    };
-    state.orders.unshift(order); save();
-    const historyItem={id,createdAt:order.createdAt,items,subtotalKnown,payment:order.payment};
-    saveOrderHistory([historyItem,...readOrderHistory()].slice(0,50));
-    cart=[]; renderCart(); renderOrderHistory(); renderOrders();
-    const box=document.getElementById('orderConfirmation');
-    box.innerHTML=`<strong>Pedido ${esc(id)} registrado na fila local do PDV.</strong><br>Ele só aparece no PDV aberto neste mesmo navegador e aparelho. Sem banco online, não chega ao PDV em outro dispositivo.`;
-    box.classList.remove('hide'); e.currentTarget.reset();
-  });
-  document.getElementById('orderHistoryList').addEventListener('click', e => {
-    const button = e.target.closest('[data-repeat-order]'); if (!button) return;
-    const saved = readOrderHistory().find(x => x.id === button.dataset.repeatOrder); if (!saved) return;
-    cart = saved.items.map(x => ({ ...x })); renderCart(); document.getElementById('checkoutButton').scrollIntoView({behavior:'smooth',block:'center'});
-  });
-  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.close).close()));
-}
-function renderCategories() {
-  const cats = ['Todos', ...new Set(state.products.filter(p => p.enabled !== false).map(p => p.category))];
-  const info = { 'Todos':['🍽️','Explore o cardápio'], 'Pizzas':['🍕','Sabores e tamanhos'], 'Complementos':['🧀','Bordas recheadas'], 'Esfihas':['🥟','Tradicionais, gourmet e doces'], 'Porções':['🍟','Para compartilhar'], 'Açaí':['🍧','Açaí, cupuaçu e vitaminas'], 'Adicionais':['🍫','Complementos para açaí'], 'Bebidas':['🥤','Sucos e bebidas'] };
-  const root = document.getElementById('categoryTabs');
-  root.innerHTML = cats.map(c => { const data=info[c]||['🍴','Veja opções e preços']; return `<button type="button" data-category="${esc(c)}" class="${c===activeCategory?'active':''}"><span class="shortcut-icon">${data[0]}</span><strong>${esc(c)}</strong><small>${esc(data[1])}</small></button>`; }).join('');
-}
-function renderProducts() {
-  if (!document.getElementById('products')) return;
-  renderCategories();
-  const products = state.products.filter(p => p.enabled !== false && (activeCategory === 'Todos' || p.category === activeCategory));
-  const addOns = state.products.filter(p => p.category === 'Adicionais' && p.enabled !== false);
-  const root = document.getElementById('products');
-  root.innerHTML = products.map(p => {
-    const v = p.variants?.[0] || { label:'unidade', price:0 };
-    const pizzaOptions = p.kind === 'pizza' ? `<details class="customization"><summary>Combinar dois sabores (opcional)</summary><label>Segundo sabor · o valor final será confirmado pelo atendimento</label><select data-flavor2><option value="">Sem segundo sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false && x.id !== p.id).map(x => `<option value="${esc(x.id)}">${esc(x.name)} · ${money(productUnitPrice(x, v.label))}</option>`).join('')}</select></details>` : '';
-    const calzoneOptions = p.kind === 'calzone' ? `<details class="customization"><summary>Escolher sabor</summary><label>Sabor do calzone</label><select data-calzone-flavor><option value="">Escolha um sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false).map(x => `<option>${esc(x.name)}</option>`).join('')}</select></details>` : '';
-    const crustOptions = p.kind === 'crust' ? `<details class="customization"><summary>Escolher sabor da borda</summary><select data-crust-flavor><option>Catupiry</option><option>Cheddar</option><option>Chocolate</option><option>Cream cheese</option></select></details>` : '';
-    const toppingList = ['Calabresa','Cebola','Frango desfiado','Milho','Bacon','Champignon','Palmito','Tomate','Presunto','Requeijão','Cheddar','Azeitona','Ovo','Brócolis','Costela','Carne seca'];
-    const customPizza = p.kind === 'custom-pizza' ? `<details class="customization"><summary>Escolher até 5 ingredientes</summary><div class="extras-list">${toppingList.map(x => `<div class="extra-option"><label><input data-topping="${esc(x)}" type="checkbox"> ${esc(x)}</label></div>`).join('')}</div></details>` : '';
-    const extras = p.kind === 'acai' ? `<details><summary>Adicionar complementos</summary><div class="extras-list">${addOns.map(x => `<div class="extra-option"><label><input data-extra-check="${esc(x.id)}" type="checkbox"> ${esc(x.name)}</label><strong>${money(x.variants?.[0]?.price)}</strong></div>`).join('')}</div></details>` : '';
-    return `<article class="product-card" data-id="${esc(p.id)}" data-kind="${esc(p.kind||'item')}">${p.image?`<img class="product-thumb" src="${esc(p.image)}" alt="Foto ilustrativa de ${esc(p.name)}" loading="lazy">`:''}<div class="product-group">${esc(p.category)} · ${esc(p.group||'')}</div><h3>${esc(p.name)}</h3>${p.description?`<p class="product-desc">${esc(p.description)}</p>`:''}<label>Opção / tamanho</label><select data-variant>${priceVariants(p)}</select>${pizzaOptions}${calzoneOptions}${crustOptions}${customPizza}${extras}<div class="product-bottom"><span class="price" data-card-price>${money(v.price)}</span><button class="btn" data-add type="button">Adicionar</button></div></article>`;
-  }).join('') || '<p class="muted">Não há itens disponíveis nesta categoria.</p>';
-}
-function updateCardPrice(card) {
-  if (!card) return;
-  const p = state.products.find(x => x.id === card.dataset.id); if (!p) return;
-  const label = card.querySelector('[data-variant]')?.value;
-  let value = productUnitPrice(p, label);
-  const secondId = card.querySelector('[data-flavor2]')?.value;
-  if (secondId) { card.querySelector('[data-card-price]').textContent = 'A confirmar'; return; }
-  card.querySelectorAll('[data-extra-check]:checked').forEach(check => { const extra=state.products.find(x=>x.id===check.dataset.extraCheck); if(extra) value += productUnitPrice(extra, extra.variants?.[0]?.label); });
-  card.querySelector('[data-card-price]').textContent = money(value);
-}
-function addProductToCart(id, card) {
-  const p = state.products.find(x => x.id === id); if (!p || p.enabled === false) return;
-  const variant = card.querySelector('[data-variant]')?.value || p.variants?.[0]?.label || 'unidade';
-  let unitPrice = productUnitPrice(p, variant); let name = p.name; let description = p.description || ''; let pricePending = false;
-  const flavor2 = card.querySelector('[data-flavor2]')?.value;
-  if (flavor2) {
-    const p2 = state.products.find(x => x.id === flavor2); if (p2) { pricePending = true; unitPrice = 0; name += ` meio a meio: ${p2.name}`; description += ' · Valor final da combinação a confirmar pela equipe.'; }
-  }
-  const calzoneFlavor=card.querySelector('[data-calzone-flavor]')?.value;
-  if(p.kind==='calzone') { if(!calzoneFlavor){alert('Escolha o sabor do calzone.');return;} description+=` · Sabor: ${calzoneFlavor}`; }
-  const crustFlavor=card.querySelector('[data-crust-flavor]')?.value;
-  if(p.kind==='crust'&&crustFlavor) description+=` · Borda: ${crustFlavor}`;
-  const toppings=[...card.querySelectorAll('[data-topping]:checked')].map(x=>x.dataset.topping);
-  if(p.kind==='custom-pizza') { if(toppings.length>5){alert('Escolha até cinco ingredientes.');return;} description+=` · Ingredientes: ${toppings.join(', ')||'a escolher'}`; }
-  const selectedExtras = [...card.querySelectorAll('[data-extra-check]:checked')].map(check => state.products.find(x => x.id === check.dataset.extraCheck)).filter(Boolean);
-  if (selectedExtras.length) { unitPrice += selectedExtras.reduce((sum,x)=>sum+productUnitPrice(x,x.variants?.[0]?.label),0); description += ` · Adicionais: ${selectedExtras.map(x=>x.name).join(', ')}`; }
-  const key = `${p.id}-${variant}-${flavor2||calzoneFlavor||''}-${crustFlavor||''}-${toppings.join(',')}-${selectedExtras.map(x=>x.id).join(',')}`;
-  const found = cart.find(x => x.key === key);
-  if (found) found.qty++;
-  else cart.push({ key, productId:p.id, name, variant, description, unitPrice, pricePending, qty:1 });
-  renderCart();
-}
-function renderCart() {
-  const root = document.getElementById('cartItems'); if (!root) return;
-  const count = cart.reduce((n,x)=>n+x.qty,0); document.getElementById('cartCount').textContent = count;
-  if (!cart.length) root.innerHTML = '<div class="cart-empty">Seu carrinho está vazio.</div>';
-  else root.innerHTML = cart.map((x,i)=>`<div class="cart-line"><div class="cart-line-head"><span>${esc(x.qty)}× ${esc(x.name)}</span><strong>${x.pricePending?'Preço a confirmar':money(x.unitPrice*x.qty)}</strong></div><small>${esc(x.variant)}${x.description?` · ${esc(x.description)}`:''}</small><div class="cart-line-controls"><button type="button" data-cart-action="minus" data-index="${i}" aria-label="Diminuir">−</button><span>${x.qty}</span><button type="button" data-cart-action="plus" data-index="${i}" aria-label="Aumentar">+</button><button type="button" data-cart-action="remove" data-index="${i}">Remover</button></div></div>`).join('');
-  const subtotal = cart.reduce((n,x)=>n+(x.pricePending?0:x.unitPrice*x.qty),0);
-  document.getElementById('cartSubtotal').textContent=money(subtotal);document.getElementById('deliveryFee').textContent='A confirmar';document.getElementById('cartTotal').textContent='A confirmar pelo PDV';
-  const button=document.getElementById('checkoutButton');button.disabled=!cart.length||!isOpenNow();button.title=!isOpenNow()?'A loja está fechada; pedidos disponíveis todos os dias, das 18h às 23h.':'';
-}
-function renderOrderHistory() {
-  const root=document.getElementById('orderHistoryList'); if(!root) return;
-  const orders=readOrderHistory();
-  if(!orders.length){root.innerHTML='<div class="panel muted">Seus pedidos ficam salvos neste aparelho e aparecem aqui.</div>';return;}
-  root.innerHTML=orders.map(order=>{
-    const liveOrder=state.orders.find(x=>x.id===order.id); const status=liveOrder?.status||'Registrado neste aparelho';
-    return `<article class="order-card"><div class="product-group">Pedido ${esc(order.id)}</div><h3>Pedido de delivery <span class="status-chip">${esc(status)}</span></h3><div class="order-meta">${new Date(order.createdAt).toLocaleString('pt-BR')} · salvo neste aparelho</div><div class="order-items">${(order.items||[]).map(line=>`<div>${esc(line.qty)}× ${esc(line.name)} (${esc(line.variant)}) — ${line.pricePending?'preço a confirmar':money(line.unitPrice*line.qty)}</div>${line.description?`<small class="muted">${esc(line.description)}</small>`:''}`).join('')}<div class="total-row"><span>Subtotal com preço definido</span><strong>${money(order.subtotalKnown||0)}</strong></div><small class="muted">A taxa e o total final precisam ser confirmados pela equipe.</small></div><button class="btn secondary" type="button" data-repeat-order="${esc(order.id)}">Repetir pedido</button></article>`;
-  }).join('');
-}
-function isOpenNow() {
-  const s=state.settings||{}; if(s.isOpen===false) return false; const open=s.openTime||'18:00', close=s.closeTime||'23:00';
-  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
-  const mins=Number(parts.find(x=>x.type==='hour')?.value||0)*60+Number(parts.find(x=>x.type==='minute')?.value||0);
-  const a=Number(open.slice(0,2))*60+Number(open.slice(3,5)); const b=Number(close.slice(0,2))*60+Number(close.slice(3,5));
-  return a<=b ? mins>=a&&mins<b : mins>=a||mins<b;
-}
-function renderStoreNotice() {
-  const s=state.settings||{}; const open=isOpenNow();
-  const msg=`${open?'🟢 Aberto agora':'🔴 Fechado'} · Todos os dias, ${esc(s.openTime||'18:00')}–${esc(s.closeTime||'23:00')} · Taxa de entrega a confirmar pela equipe.`;
-  const el=document.getElementById('storeNotice');if(el){el.textContent=msg;el.classList.toggle('closed',!open);}
-  const pdv=document.getElementById('pdvStoreNotice');if(pdv){pdv.textContent=msg;pdv.classList.toggle('closed',!open);}
-}
-function initPdv() {
-  renderOrders(); renderProductRows(); renderStoreNotice(); setupTabs(); setupSale(); setupProducts(); setupSettings();
-  document.getElementById('clearDemoOrders').addEventListener('click',()=>{if(confirm('Apagar os pedidos salvos neste navegador?')){state.orders=[];save();renderOrders();}});
-}
-function setupTabs() {
-  document.querySelector('.pdv-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;document.querySelectorAll('.pdv-tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.pdv-view').forEach(x=>x.hidden=x.id!==`view-${b.dataset.tab}`);if(b.dataset.tab==='sale')fillSaleProducts();});
-}
-function renderOrders() {
-  const root=document.getElementById('ordersList');if(!root)return;
-  root.innerHTML=state.orders.length?state.orders.map(o=>`<article class="order-card"><div class="product-group">${esc(o.channel)} · ${esc(o.id)}</div><h3>${esc(o.customer?.name||'Venda balcão')} <span class="status-chip ${o.status==='Concluído'?'green':o.status==='Cancelado'?'red':''}">${esc(o.status)}</span></h3><div class="order-meta">${new Date(o.createdAt).toLocaleString('pt-BR')} · ${esc(o.payment||'Pagamento não informado')}</div>${o.customer?.phone?`<div>Telefone: ${esc(o.customer.phone)}</div>`:''}${o.customer?.address?`<div>Endereço: ${esc(o.customer.address)}</div>`:''}${o.changeFor?`<div>Troco para: ${esc(o.changeFor)}</div>`:''}${o.customer?.notes?`<div class="muted">Obs.: ${esc(o.customer.notes)}</div>`:''}<div class="order-items">${(o.items||[]).map(x=>`<div>${esc(x.qty)}× ${esc(x.name)} (${esc(x.variant)}) — ${x.pricePending?'A confirmar':money(x.unitPrice*x.qty)}</div>${x.description?`<small class="muted">${esc(x.description)}</small>`:''}`).join('')}<div class="totals"><div class="total-row"><span>Subtotal com preço definido</span><strong>${money(o.subtotal)}</strong></div><div class="total-row"><span>Entrega</span><strong>${o.feePending?'A confirmar':money(o.deliveryFee)}</strong></div><div class="total-row total"><span>Total final</span><strong>${o.totalPending?'A confirmar':money(o.total)}</strong></div></div></div><div class="order-actions"><label class="small-note">Status <select data-order-status="${esc(o.id)}">${STATUS.map(st=>`<option ${o.status===st?'selected':''}>${esc(st)}</option>`).join('')}</select></label></div></article>`).join(''):'<div class="panel muted">Nenhum pedido na fila local. Sem banco online, o PDV só recebe pedidos do cardápio aberto no mesmo navegador e aparelho.</div>';
-  root.querySelectorAll('[data-order-status]').forEach(sel=>sel.addEventListener('change',()=>{const order=state.orders.find(x=>x.id===sel.dataset.orderStatus);if(order){order.status=sel.value;save();renderOrders();}}));
-}
-function fillSaleProducts() {
-  const select=document.getElementById('saleProduct');if(!select)return;
-  const avail=state.products.filter(p=>p.enabled!==false);
-  select.innerHTML=avail.map(p=>`<option value="${esc(p.id)}">${esc(p.category)} · ${esc(p.name)}</option>`).join('');
-  fillSaleVariants();
-}
-function fillSaleVariants() {
-  const p=state.products.find(x=>x.id===document.getElementById('saleProduct')?.value);
-  const select=document.getElementById('saleVariant');if(!select)return;
-  select.innerHTML=(p?.variants||[]).map(v=>`<option value="${esc(v.label)}">${esc(v.label)} · ${money(v.price)}</option>`).join('');
-}
-function setupSale() {
-  document.getElementById('saleProduct').addEventListener('change',fillSaleVariants);
-  document.getElementById('addSaleItem').addEventListener('click',()=>{
-    const p=state.products.find(x=>x.id===document.getElementById('saleProduct').value);if(!p)return;
-    const variant=document.getElementById('saleVariant').value;const qty=Math.max(1,Number(document.getElementById('saleQuantity').value||1));
-    const line=saleCart.find(x=>x.productId===p.id&&x.variant===variant);if(line)line.qty+=qty;else saleCart.push({productId:p.id,name:p.name,description:p.description||'',variant,unitPrice:productUnitPrice(p,variant),qty});
-    renderSaleCart();
-  });
-  document.getElementById('finishSale').addEventListener('click',()=>{
-    if(!saleCart.length){alert('Adicione pelo menos um produto.');return;}
-    const subtotal=saleCart.reduce((a,x)=>a+x.qty*x.unitPrice,0);
-    const o={id:`BAL-${Date.now().toString().slice(-6)}`,channel:'Balcão',status:'Concluído',createdAt:new Date().toISOString(),customer:{name:document.getElementById('saleCustomer').value||'Venda balcão'},payment:'Não informado',items:saleCart.map(x=>({...x})),subtotal,deliveryFee:0,total:subtotal,demo:true};
-    state.orders.unshift(o);save();saleCart=[];renderSaleCart();renderOrders();document.getElementById('saleCustomer').value='';alert(`Venda ${o.id} registrada.`);
-  });
-}
-function renderSaleCart() {
-  const root=document.getElementById('saleCart');if(!root)return;
-  root.innerHTML=saleCart.length?saleCart.map((x,i)=>`<div class="cart-line"><div class="cart-line-head"><span>${x.qty}× ${esc(x.name)}</span><strong>${money(x.qty*x.unitPrice)}</strong></div><small>${esc(x.variant)}</small><button type="button" class="btn ghost" data-sale-remove="${i}">Remover</button></div>`).join(''):'<div class="cart-empty">Nenhum item adicionado.</div>';
-  root.querySelectorAll('[data-sale-remove]').forEach(b=>b.addEventListener('click',()=>{saleCart.splice(Number(b.dataset.saleRemove),1);renderSaleCart();}));
-  document.getElementById('saleTotal').textContent=money(saleCart.reduce((a,x)=>a+x.qty*x.unitPrice,0));
-}
-function setupProducts() {
-  const form=document.getElementById('productForm');
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    const id=document.getElementById('editProductId').value;
-    const raw=document.getElementById('productVariants').value;
-    const variants=raw.split(';').map(part=>{const [label,price]=part.split(':');return {label:(label||'').trim(),price:Number((price||'').trim().replace(',','.'))};}).filter(x=>x.label&&Number.isFinite(x.price)&&x.price>=0);
-    if(!variants.length){alert('Informe pelo menos uma opção no formato “unidade:12”.');return;}
-    const current=id?state.products.find(x=>x.id===id):null;
-    const product={...(current||{}),id:id||`custom-${Date.now()}`,category:document.getElementById('productCategory').value.trim(),group:document.getElementById('productGroup').value.trim(),name:document.getElementById('productName').value.trim(),description:document.getElementById('productDescription').value.trim(),image:document.getElementById('productImage').value.trim(),variants,enabled:current?.enabled!==false,kind:current?.kind||'item'};
-    if(id)state.products=state.products.map(x=>x.id===id?product:x);else state.products.push(product);
-    save();form.reset();document.getElementById('editProductId').value='';document.getElementById('saveProduct').textContent='Salvar produto';renderProductRows();
-  });
-  document.getElementById('cancelEdit').addEventListener('click',()=>{form.reset();document.getElementById('editProductId').value='';document.getElementById('saveProduct').textContent='Salvar produto';});
-  document.getElementById('productRows').addEventListener('click',e=>{
-    const b=e.target.closest('[data-product-action]');if(!b)return;
-    const p=state.products.find(x=>x.id===b.dataset.id);if(!p)return;
-    if(b.dataset.productAction==='toggle'){p.enabled=p.enabled===false;save();renderProductRows();}
-    if(b.dataset.productAction==='edit'){
-      document.getElementById('editProductId').value=p.id;document.getElementById('productName').value=p.name;document.getElementById('productCategory').value=p.category;document.getElementById('productGroup').value=p.group||'';document.getElementById('productImage').value=p.image||'';document.getElementById('productDescription').value=p.description||'';document.getElementById('productVariants').value=(p.variants||[]).map(v=>`${v.label}:${v.price}`).join('; ');document.getElementById('saveProduct').textContent='Atualizar produto';document.querySelector('[data-tab="products"]').click();window.scrollTo({top:0,behavior:'smooth'});
-    }
-    if(b.dataset.productAction==='delete'&&confirm(`Remover “${p.name}” do cardápio deste navegador?`)){state.products=state.products.filter(x=>x.id!==p.id);save();renderProductRows();}
-  });
-}
-function renderProductRows() {
-  const root=document.getElementById('productRows');if(!root)return;
-  root.innerHTML=state.products.map(p=>`<tr><td><strong>${esc(p.name)}</strong><br><small class="muted">${esc(p.group||'')}</small></td><td>${esc(p.category)}</td><td>${money(p.variants?.[0]?.price)}</td><td>${p.enabled===false?'Indisponível':'Disponível'}</td><td><button class="btn ghost" data-product-action="edit" data-id="${esc(p.id)}">Editar</button> <button class="btn ghost" data-product-action="toggle" data-id="${esc(p.id)}">${p.enabled===false?'Ativar':'Pausar'}</button> <button class="btn danger" data-product-action="delete" data-id="${esc(p.id)}">Excluir</button></td></tr>`).join('');
-}
-function setupSettings() {
-  const s=state.settings||{};
-  document.getElementById('openTime').value=s.openTime||'18:00';document.getElementById('closeTime').value=s.closeTime||'23:00';document.getElementById('deliveryFeeInput').value=Number(s.deliveryFee||0);document.getElementById('storeOpenToggle').value=String(s.isOpen!==false);
-  document.getElementById('settingsForm').addEventListener('submit',e=>{e.preventDefault();state.settings={openTime:document.getElementById('openTime').value||'18:00',closeTime:document.getElementById('closeTime').value||'23:00',deliveryFee:Number(document.getElementById('deliveryFeeInput').value||0),isOpen:document.getElementById('storeOpenToggle').value==='true'};save();renderStoreNotice();alert('Configuração salva apenas neste navegador.');});
-}
-boot().catch(error=>{console.error(error);document.body.insertAdjacentHTML('afterbegin','<div class="demo-banner">Falha ao carregar o cardápio. Abra a página pelo GitHub Pages, não como arquivo local.</div>');});
+const readOrderHistory = () => { try { const v=JSON.parse(localStorage.getItem(ORDER_HISTORY_KEY)||'[]');return Array.isArray(v)?v:[]; } catch { return []; } };
+const saveOrderHistory = v => localStorage.setItem(ORDER_HISTORY_KEY,JSON.stringify(v));
+let state = { products:[], orders:[], settings:{openTime:'18:00',closeTime:'23:00',deliveryFee:null,isOpen:true} };
+let cart=[], saleCart=[], activeCategory='Pizzas', realtime=null, authBusy=false;
+const page=()=>document.body.dataset.page;
+function message(text, kind='info') { let el=document.getElementById('syncMessage'); if(!el){el=document.createElement('div');el.id='syncMessage';el.className='sync-message';document.body.prepend(el);} el.textContent=text;el.dataset.kind=kind; }
+function fromSettings(s){return {openTime:s?.open_time||'18:00',closeTime:s?.close_time||'23:00',deliveryFee:s?.delivery_fee==null?null:Number(s.delivery_fee),isOpen:s?.is_open!==false};}
+function fromOrder(o){return {id:o.id,channel:o.channel,status:o.status,createdAt:o.created_at,customer:o.customer||{},payment:o.payment,changeFor:o.change_for,items:o.items||[],subtotal:Number(o.subtotal||0),deliveryFee:o.delivery_fee==null?null:Number(o.delivery_fee),total:o.total==null?null:Number(o.total),feePending:o.fee_pending,totalPending:o.total_pending,pricePending:o.price_pending};}
+async function loadProducts(){const r=await fetch(`catalog.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw Error('Falha no catálogo base');const base=await r.json();const {data,error}=await sb.from('product_overrides').select('product_id,data,enabled');if(error)throw error;const map=new Map((data||[]).map(x=>[x.product_id,x]));state.products=base.map(p=>{const o=map.get(p.id);return o?{...p,...(o.data||{}),id:p.id,enabled:o.enabled}:p;});for(const o of data||[])if(!base.some(p=>p.id===o.product_id)&&o.data)state.products.push({...o.data,id:o.product_id,enabled:o.enabled});}
+async function loadSettings(){const {data,error}=await sb.from('store_settings').select('*').eq('id',true).maybeSingle();if(error)throw error;if(data)state.settings=fromSettings(data);}
+async function loadOrders(){const {data,error}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(200);if(error)throw error;state.orders=(data||[]).map(fromOrder);}
+async function boot(){if(!window.supabase){throw Error('Biblioteca Supabase não carregou.');}if(page()==='pdv'){await bootPdv();return;}await loadProducts();await loadSettings();initDelivery();subscribePublic();}
+function subscribePublic(){realtime=sb.channel('moncef-public-sync').on('postgres_changes',{event:'*',schema:'public',table:'product_overrides'},async()=>{await loadProducts();renderProducts();renderCategories();}).on('postgres_changes',{event:'*',schema:'public',table:'store_settings'},async()=>{await loadSettings();renderStoreNotice();renderCart();}).subscribe();}
+function productUnitPrice(p,label){const v=(p.variants||[]).find(x=>x.label===label)||(p.variants||[])[0];return Number(v?.price||0);}
+function priceVariants(p){return(p.variants||[]).map(v=>`<option value="${esc(v.label)}">${esc(v.label)} · ${money(v.price)}</option>`).join('');}
+function initDelivery(){renderCategories();renderProducts();renderCart();renderStoreNotice();renderOrderHistory();document.getElementById('categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;activeCategory=b.dataset.category;renderCategories();renderProducts();});document.getElementById('products').addEventListener('change',e=>{if(e.target.matches('[data-variant],[data-flavor2],[data-extra-check]'))updateCardPrice(e.target.closest('.product-card'));if(e.target.matches('[data-topping]')&&e.target.closest('.product-card').querySelectorAll('[data-topping]:checked').length>5){e.target.checked=false;alert('Escolha até cinco ingredientes.');}});document.getElementById('products').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(b)addProductToCart(b.closest('.product-card').dataset.id,b.closest('.product-card'));});document.getElementById('cartItems').addEventListener('click',e=>{const b=e.target.closest('[data-cart-action]');if(!b)return;const i=Number(b.dataset.index);if(!cart[i])return;if(b.dataset.cartAction==='plus')cart[i].qty++;if(b.dataset.cartAction==='minus')cart[i].qty--;if(b.dataset.cartAction==='remove'||cart[i].qty<=0)cart.splice(i,1);renderCart();});document.getElementById('checkoutButton').addEventListener('click',()=>{if(cart.length&&isOpenNow())document.getElementById('checkoutModal').showModal();else renderStoreNotice();});document.getElementById('checkoutForm').addEventListener('submit',submitOrder);document.getElementById('orderHistoryList').addEventListener('click',e=>{const b=e.target.closest('[data-repeat-order]');if(!b)return;const saved=readOrderHistory().find(x=>x.id===b.dataset.repeatOrder);if(saved){cart=saved.items.map(x=>({...x}));renderCart();document.getElementById('checkoutButton').scrollIntoView({behavior:'smooth',block:'center'});}});document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.close).close()));}
+function renderCategories(){const cats=['Todos',...new Set(state.products.filter(p=>p.enabled!==false).map(p=>p.category))];const info={'Todos':['🍽️','Explore o cardápio'],'Pizzas':['🍕','Sabores e tamanhos'],'Complementos':['🧀','Bordas recheadas'],'Esfihas':['🥟','Tradicionais, gourmet e doces'],'Porções':['🍟','Para compartilhar'],'Açaí':['🍧','Açaí, cupuaçu e vitaminas'],'Adicionais':['🍫','Complementos para açaí'],'Bebidas':['🥤','Sucos e bebidas']};const root=document.getElementById('categoryTabs');root.innerHTML=cats.map(c=>{const d=info[c]||['🍴','Veja opções e preços'];return `<button type="button" data-category="${esc(c)}" class="${c===activeCategory?'active':''}"><span class="shortcut-icon">${d[0]}</span><strong>${esc(c)}</strong><small>${esc(d[1])}</small></button>`;}).join('');}
+function renderProducts(){const root=document.getElementById('products');if(!root)return;const products=state.products.filter(p=>p.enabled!==false&&(activeCategory==='Todos'||p.category===activeCategory));const addOns=state.products.filter(p=>p.category==='Adicionais'&&p.enabled!==false);root.innerHTML=products.map(p=>{const v=p.variants?.[0]||{label:'unidade',price:0};const pizza=p.kind==='pizza'?`<details class="customization"><summary>Combinar dois sabores (opcional)</summary><label>Segundo sabor · valor final a confirmar</label><select data-flavor2><option value="">Sem segundo sabor</option>${state.products.filter(x=>x.kind==='pizza'&&x.enabled!==false&&x.id!==p.id).map(x=>`<option value="${esc(x.id)}">${esc(x.name)} · ${money(productUnitPrice(x,v.label))}</option>`).join('')}</select></details>`:'';const cal=p.kind==='calzone'?`<details class="customization"><summary>Escolher sabor</summary><label>Sabor do calzone</label><select data-calzone-flavor><option value="">Escolha um sabor</option>${state.products.filter(x=>x.kind==='pizza'&&x.enabled!==false).map(x=>`<option>${esc(x.name)}</option>`).join('')}</select></details>`:'';const crust=p.kind==='crust'?`<details class="customization"><summary>Escolher sabor da borda</summary><select data-crust-flavor><option>Catupiry</option><option>Cheddar</option><option>Chocolate</option><option>Cream cheese</option></select></details>`:'';const toppings=['Calabresa','Cebola','Frango desfiado','Milho','Bacon','Champignon','Palmito','Tomate','Presunto','Requeijão','Cheddar','Azeitona','Ovo','Brócolis','Costela','Carne seca'];const custom=p.kind==='custom-pizza'?`<details class="customization"><summary>Escolher até 5 ingredientes</summary><div class="extras-list">${toppings.map(x=>`<div class="extra-option"><label><input data-topping="${esc(x)}" type="checkbox"> ${esc(x)}</label></div>`).join('')}</div></details>`:'';const extras=p.kind==='acai'?`<details><summary>Adicionar complementos</summary><div class="extras-list">${addOns.map(x=>`<div class="extra-option"><label><input data-extra-check="${esc(x.id)}" type="checkbox"> ${esc(x.name)}</label><strong>${money(x.variants?.[0]?.price)}</strong></div>`).join('')}</div></details>`:'';return `<article class="product-card" data-id="${esc(p.id)}" data-kind="${esc(p.kind||'item')}">${p.image?`<img class="product-thumb" src="${esc(p.image)}" alt="Foto ilustrativa de ${esc(p.name)}" loading="lazy">`:''}<div class="product-group">${esc(p.category)} · ${esc(p.group||'')}</div><h3>${esc(p.name)}</h3>${p.description?`<p class="product-desc">${esc(p.description)}</p>`:''}<label>Opção / tamanho</label><select data-variant>${priceVariants(p)}</select>${pizza}${cal}${crust}${custom}${extras}<div class="product-bottom"><span class="price" data-card-price>${money(v.price)}</span><button class="btn" data-add type="button">Adicionar</button></div></article>`;}).join('')||'<p class="muted">Não há itens disponíveis nesta categoria.</p>';}
+function updateCardPrice(card){if(!card)return;const p=state.products.find(x=>x.id===card.dataset.id);if(!p)return;let val=productUnitPrice(p,card.querySelector('[data-variant]')?.value);if(card.querySelector('[data-flavor2]')?.value){card.querySelector('[data-card-price]').textContent='A confirmar';return;}card.querySelectorAll('[data-extra-check]:checked').forEach(c=>{const x=state.products.find(y=>y.id===c.dataset.extraCheck);if(x)val+=productUnitPrice(x,x.variants?.[0]?.label);});card.querySelector('[data-card-price]').textContent=money(val);}
+function addProductToCart(id,card){const p=state.products.find(x=>x.id===id);if(!p||p.enabled===false)return;const variant=card.querySelector('[data-variant]')?.value||p.variants?.[0]?.label||'unidade';let unitPrice=productUnitPrice(p,variant),name=p.name,description=p.description||'',pricePending=false;const flavor2=card.querySelector('[data-flavor2]')?.value;if(flavor2){const p2=state.products.find(x=>x.id===flavor2);if(p2){pricePending=true;unitPrice=0;name+=` meio a meio: ${p2.name}`;description+=' · Valor final da combinação a confirmar pela equipe.';}}const cal=card.querySelector('[data-calzone-flavor]')?.value;if(p.kind==='calzone'){if(!cal){alert('Escolha o sabor do calzone.');return;}description+=` · Sabor: ${cal}`;}const crust=card.querySelector('[data-crust-flavor]')?.value;if(p.kind==='crust'&&crust)description+=` · Borda: ${crust}`;const toppings=[...card.querySelectorAll('[data-topping]:checked')].map(x=>x.dataset.topping);if(p.kind==='custom-pizza')description+=` · Ingredientes: ${toppings.join(', ')||'a escolher'}`;const extras=[...card.querySelectorAll('[data-extra-check]:checked')].map(c=>state.products.find(x=>x.id===c.dataset.extraCheck)).filter(Boolean);if(extras.length){unitPrice+=extras.reduce((a,x)=>a+productUnitPrice(x,x.variants?.[0]?.label),0);description+=` · Adicionais: ${extras.map(x=>x.name).join(', ')}`;}const key=`${p.id}-${variant}-${flavor2||cal||''}-${crust||''}-${toppings.join(',')}-${extras.map(x=>x.id).join(',')}`;const old=cart.find(x=>x.key===key);if(old)old.qty++;else cart.push({key,productId:p.id,name,variant,description,unitPrice,pricePending,qty:1});renderCart();}
+function renderCart(){const root=document.getElementById('cartItems');if(!root)return;document.getElementById('cartCount').textContent=cart.reduce((a,x)=>a+x.qty,0);root.innerHTML=cart.length?cart.map((x,i)=>`<div class="cart-line"><div class="cart-line-head"><span>${x.qty}× ${esc(x.name)}</span><strong>${x.pricePending?'Preço a confirmar':money(x.unitPrice*x.qty)}</strong></div><small>${esc(x.variant)}${x.description?` · ${esc(x.description)}`:''}</small><div class="cart-line-controls"><button data-cart-action="minus" data-index="${i}" type="button">−</button><span>${x.qty}</span><button data-cart-action="plus" data-index="${i}" type="button">+</button><button data-cart-action="remove" data-index="${i}" type="button">Remover</button></div></div>`).join(''):'<div class="cart-empty">Seu carrinho está vazio.</div>';const sub=cart.reduce((a,x)=>a+(x.pricePending?0:x.unitPrice*x.qty),0);document.getElementById('cartSubtotal').textContent=money(sub);document.getElementById('deliveryFee').textContent=state.settings.deliveryFee==null?'A confirmar':money(state.settings.deliveryFee);document.getElementById('cartTotal').textContent='A confirmar pelo PDV';const b=document.getElementById('checkoutButton');b.disabled=!cart.length||!isOpenNow();b.title=!isOpenNow()?'A loja está fechada; consulte os horários.':'';}
+function isOpenNow(){const s=state.settings;if(s.isOpen===false)return false;const p=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()),n=Number(p.find(x=>x.type==='hour').value)*60+Number(p.find(x=>x.type==='minute').value),a=Number(s.openTime.slice(0,2))*60+Number(s.openTime.slice(3,5)),b=Number(s.closeTime.slice(0,2))*60+Number(s.closeTime.slice(3,5));return a<=b?n>=a&&n<b:n>=a||n<b;}
+function renderStoreNotice(){const s=state.settings,open=isOpenNow(),msg=`${open?'🟢 Aberto agora':'🔴 Fechado'} · Todos os dias, ${s.openTime}–${s.closeTime} · Taxa de entrega ${s.deliveryFee==null?'a confirmar pela equipe':money(s.deliveryFee)}.`;for(const id of ['storeNotice','pdvStoreNotice']){const el=document.getElementById(id);if(el){el.textContent=msg;el.classList.toggle('closed',!open);}}}
+async function submitOrder(e){e.preventDefault();if(!cart.length||!isOpenNow()){alert('A loja está fechada ou o carrinho está vazio.');return;}const form=e.currentTarget,btn=form.querySelector('[type=submit]');btn.disabled=true;btn.textContent='Registrando…';try{const data=new FormData(form),id=`MON-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0,6).toUpperCase()}`,token=[...crypto.getRandomValues(new Uint8Array(32))].map(x=>x.toString(16).padStart(2,'0')).join(''),items=cart.map(x=>({...x})),subtotal=items.reduce((a,x)=>a+(x.pricePending?0:x.unitPrice*x.qty),0),customer={name:String(data.get('customerName')||'').trim(),phone:String(data.get('customerPhone')||'').trim(),address:String(data.get('customerAddress')||'').trim(),notes:String(data.get('orderNotes')||'').trim()},row={id,channel:'Delivery',status:'Novo',customer,payment:String(data.get('paymentMethod')||''),change_for:String(data.get('changeFor')||''),items,subtotal,delivery_fee:state.settings.deliveryFee,total:null,fee_pending:state.settings.deliveryFee==null,total_pending:true,price_pending:items.some(x=>x.pricePending),tracking_token:token};const {error}=await sb.from('orders').insert(row);if(error)throw error;const history={id,trackingToken:token,createdAt:new Date().toISOString(),items,subtotalKnown:subtotal,payment:row.payment};saveOrderHistory([history,...readOrderHistory()].slice(0,50));cart=[];renderCart();renderOrderHistory();const box=document.getElementById('orderConfirmation');box.innerHTML=`<strong>Pedido ${esc(id)} registrado com sucesso e enviado à fila do PDV.</strong><br>Guarde este aparelho para acompanhar o status do pedido.`;box.classList.remove('hide');form.reset();message('Pedido salvo com segurança no sistema da Moncef.','ok');}catch(err){console.error(err);message(`Não foi possível registrar o pedido: ${err.message||'verifique sua conexão e tente novamente.'}`,'error');alert('Não foi possível registrar o pedido. Seu carrinho foi mantido; tente novamente.');}finally{btn.disabled=false;btn.textContent='Registrar pedido no PDV';}}
+async function refreshOrderHistory(){const items=readOrderHistory();for(const x of items){if(!x.trackingToken)continue;try{const {data,error}=await sb.rpc('get_public_order_status',{p_order_id:x.id,p_tracking_token:x.trackingToken});if(!error&&data){x.status=data.status;x.subtotalKnown=Number(data.subtotal||0);x.deliveryFee=data.delivery_fee;x.total=data.total;x.feePending=data.fee_pending;x.totalPending=data.total_pending;}}catch(err){console.warn('Status indisponível',err);}}saveOrderHistory(items);renderOrderHistory();}
+function renderOrderHistory(){const root=document.getElementById('orderHistoryList');if(!root)return;const orders=readOrderHistory();if(!orders.length){root.innerHTML='<div class="panel muted">Seus pedidos ficam salvos neste aparelho. Depois de registrar um pedido, acompanhe aqui as atualizações da loja.</div>';return;}root.innerHTML=orders.map(o=>`<article class="order-card"><div class="product-group">Pedido ${esc(o.id)}</div><h3>Pedido de delivery <span class="status-chip">${esc(o.status||'Recebido')}</span></h3><div class="order-meta">${new Date(o.createdAt).toLocaleString('pt-BR')} · atualização online</div><div class="order-items">${(o.items||[]).map(x=>`<div>${esc(x.qty)}× ${esc(x.name)} (${esc(x.variant)}) — ${x.pricePending?'preço a confirmar':money(x.unitPrice*x.qty)}</div>${x.description?`<small class="muted">${esc(x.description)}</small>`:''}`).join('')}<div class="total-row"><span>Subtotal com preço definido</span><strong>${money(o.subtotalKnown||0)}</strong></div><small class="muted">Taxa e total final ${o.totalPending?'a confirmar pela equipe':money(o.total)}.</small></div><button class="btn secondary" data-repeat-order="${esc(o.id)}" type="button">Repetir pedido</button></article>`).join('');}
+async function bootPdv(){document.getElementById('pdvApp').hidden=true;document.getElementById('pdvLogin').hidden=false;setupLogin();const {data:{session}}=await sb.auth.getSession();if(session)await authorizeAdmin(session);sb.auth.onAuthStateChange(async(event,session)=>{if(session){if(location.hash.includes('type=invite')||location.hash.includes('type=recovery'))showSetPassword();else await authorizeAdmin(session);}else if(!authBusy){document.getElementById('pdvApp').hidden=true;document.getElementById('pdvLogin').hidden=false;}});}
+function setupLogin(){document.getElementById('pdvLoginForm').addEventListener('submit',async e=>{e.preventDefault();const err=document.getElementById('loginError');err.textContent='';const button=e.currentTarget.querySelector('button[type=submit]');button.disabled=true;const {error}=await sb.auth.signInWithPassword({email:document.getElementById('loginEmail').value.trim(),password:document.getElementById('loginPassword').value});button.disabled=false;if(error)err.textContent='Não foi possível entrar. Confira seu e-mail, senha e convite.';});document.getElementById('setPasswordForm').addEventListener('submit',async e=>{e.preventDefault();const pw=document.getElementById('newPassword').value;if(pw.length<8){document.getElementById('loginError').textContent='Use pelo menos 8 caracteres.';return;}const {error}=await sb.auth.updateUser({password:pw});if(error){document.getElementById('loginError').textContent='Não foi possível salvar a senha. Abra novamente o link seguro recebido por e-mail.';return;}document.getElementById('setPasswordPanel').hidden=true;document.getElementById('loginFormPanel').hidden=false;history.replaceState(null,'',location.pathname);const {data:{session}}=await sb.auth.getSession();if(session)await authorizeAdmin(session);});document.getElementById('showSetPassword').addEventListener('click',()=>{document.getElementById('loginFormPanel').hidden=true;document.getElementById('setPasswordPanel').hidden=false;});}
+function showSetPassword(){document.getElementById('loginFormPanel').hidden=true;document.getElementById('setPasswordPanel').hidden=false;}
+async function authorizeAdmin(session){if(authBusy)return;authBusy=true;try{const {data,error}=await sb.rpc('is_pdv_admin');if(error||data!==true){await sb.auth.signOut();document.getElementById('loginError').textContent='Esta conta não tem autorização para acessar o PDV.';return;}document.getElementById('pdvLogin').hidden=true;document.getElementById('pdvApp').hidden=false;document.getElementById('currentUserEmail').textContent=session.user.email||'';await loadProducts();await loadSettings();await loadOrders();initPdv();subscribeAdmin();}catch(err){console.error(err);document.getElementById('loginError').textContent='O sistema não conseguiu validar o acesso. Tente novamente.';}finally{authBusy=false;}}
+function subscribeAdmin(){if(realtime)sb.removeChannel(realtime);realtime=sb.channel('moncef-admin-sync').on('postgres_changes',{event:'*',schema:'public',table:'orders'},async()=>{await loadOrders();renderOrders();}).on('postgres_changes',{event:'*',schema:'public',table:'product_overrides'},async()=>{await loadProducts();renderProductRows();fillSaleProducts();}).on('postgres_changes',{event:'*',schema:'public',table:'store_settings'},async()=>{await loadSettings();renderStoreNotice();setupSettingsValues();}).subscribe();}
+function initPdv(){renderOrders();renderProductRows();renderStoreNotice();setupTabs();setupSale();setupProducts();setupSettings();document.getElementById('pdvLogout').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});}
+function setupTabs(){document.querySelector('.pdv-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;document.querySelectorAll('.pdv-tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.pdv-view').forEach(x=>x.hidden=x.id!==`view-${b.dataset.tab}`);if(b.dataset.tab==='sale')fillSaleProducts();});}
+function renderOrders(){const root=document.getElementById('ordersList');if(!root)return;root.innerHTML=state.orders.length?state.orders.map(o=>`<article class="order-card"><div class="product-group">${esc(o.channel)} · ${esc(o.id)}</div><h3>${esc(o.customer?.name||'Venda balcão')} <span class="status-chip ${o.status==='Concluído'?'green':o.status==='Cancelado'?'red':''}">${esc(o.status)}</span></h3><div class="order-meta">${new Date(o.createdAt).toLocaleString('pt-BR')} · ${esc(o.payment||'Pagamento não informado')}</div>${o.customer?.phone?`<div>Telefone: ${esc(o.customer.phone)}</div>`:''}${o.customer?.address?`<div>Endereço: ${esc(o.customer.address)}</div>`:''}${o.changeFor?`<div>Troco para: ${esc(o.changeFor)}</div>`:''}${o.customer?.notes?`<div class="muted">Obs.: ${esc(o.customer.notes)}</div>`:''}<div class="order-items">${(o.items||[]).map(x=>`<div>${esc(x.qty)}× ${esc(x.name)} (${esc(x.variant)}) — ${x.pricePending?'A confirmar':money(x.unitPrice*x.qty)}</div>${x.description?`<small class="muted">${esc(x.description)}</small>`:''}`).join('')}<div class="totals"><div class="total-row"><span>Subtotal com preço definido</span><strong>${money(o.subtotal)}</strong></div><div class="total-row"><span>Entrega</span><strong>${o.feePending?'A confirmar':money(o.deliveryFee)}</strong></div><div class="total-row total"><span>Total final</span><strong>${o.totalPending?'A confirmar':money(o.total)}</strong></div></div></div><div class="order-actions"><label class="small-note">Status <select data-order-status="${esc(o.id)}">${STATUS.map(s=>`<option ${o.status===s?'selected':''}>${esc(s)}</option>`).join('')}</select></label></div></article>`).join(''):'<div class="panel muted">Nenhum pedido na fila.</div>';root.querySelectorAll('[data-order-status]').forEach(sel=>sel.addEventListener('change',async()=>{sel.disabled=true;const {error}=await sb.from('orders').update({status:sel.value}).eq('id',sel.dataset.orderStatus);sel.disabled=false;if(error){alert('Não foi possível atualizar o status.');return;}await loadOrders();renderOrders();}));}
+function fillSaleProducts(){const select=document.getElementById('saleProduct');if(!select)return;const avail=state.products.filter(p=>p.enabled!==false);select.innerHTML=avail.map(p=>`<option value="${esc(p.id)}">${esc(p.category)} · ${esc(p.name)}</option>`).join('');fillSaleVariants();}
+function fillSaleVariants(){const p=state.products.find(x=>x.id===document.getElementById('saleProduct')?.value),select=document.getElementById('saleVariant');if(select)select.innerHTML=(p?.variants||[]).map(v=>`<option value="${esc(v.label)}">${esc(v.label)} · ${money(v.price)}</option>`).join('');}
+function setupSale(){document.getElementById('saleProduct').addEventListener('change',fillSaleVariants);document.getElementById('addSaleItem').addEventListener('click',()=>{const p=state.products.find(x=>x.id===document.getElementById('saleProduct').value);if(!p)return;const variant=document.getElementById('saleVariant').value,qty=Math.max(1,Number(document.getElementById('saleQuantity').value||1)),old=saleCart.find(x=>x.productId===p.id&&x.variant===variant);if(old)old.qty+=qty;else saleCart.push({productId:p.id,name:p.name,description:p.description||'',variant,unitPrice:productUnitPrice(p,variant),qty});renderSaleCart();});document.getElementById('finishSale').addEventListener('click',async()=>{if(!saleCart.length)return alert('Adicione pelo menos um produto.');const subtotal=saleCart.reduce((a,x)=>a+x.qty*x.unitPrice,0),order={id:`BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0,4).toUpperCase()}`,channel:'Balcão',status:'Concluído',customer:{name:document.getElementById('saleCustomer').value||'Venda balcão'},payment:'Não informado',change_for:'',items:saleCart.map(x=>({...x})),subtotal,delivery_fee:0,total:subtotal,fee_pending:false,total_pending:false,price_pending:false};const {error}=await sb.from('orders').insert(order);if(error){alert('Não foi possível registrar a venda.');return;}saleCart=[];renderSaleCart();document.getElementById('saleCustomer').value='';await loadOrders();renderOrders();alert(`Venda ${order.id} registrada.`);});}
+function renderSaleCart(){const root=document.getElementById('saleCart');if(!root)return;root.innerHTML=saleCart.length?saleCart.map((x,i)=>`<div class="cart-line"><div class="cart-line-head"><span>${x.qty}× ${esc(x.name)}</span><strong>${money(x.qty*x.unitPrice)}</strong></div><small>${esc(x.variant)}</small><button type="button" class="btn ghost" data-sale-remove="${i}">Remover</button></div>`).join(''):'<div class="cart-empty">Nenhum item adicionado.</div>';root.querySelectorAll('[data-sale-remove]').forEach(b=>b.addEventListener('click',()=>{saleCart.splice(Number(b.dataset.saleRemove),1);renderSaleCart();}));document.getElementById('saleTotal').textContent=money(saleCart.reduce((a,x)=>a+x.qty*x.unitPrice,0));}
+async function saveProduct(p){const {error}=await sb.from('product_overrides').upsert({product_id:p.id,data:p,enabled:p.enabled!==false},{onConflict:'product_id'});if(error)throw error;}
+function setupProducts(){const form=document.getElementById('productForm');form.addEventListener('submit',async e=>{e.preventDefault();const id=document.getElementById('editProductId').value,raw=document.getElementById('productVariants').value,variants=raw.split(';').map(part=>{const [label,price]=part.split(':');return{label:(label||'').trim(),price:Number((price||'').trim().replace(',','.'))};}).filter(x=>x.label&&Number.isFinite(x.price)&&x.price>=0);if(!variants.length)return alert('Informe pelo menos uma opção no formato “unidade:12”.');const cur=id?state.products.find(x=>x.id===id):null,p={...(cur||{}),id:id||`custom-${crypto.randomUUID().slice(0,12)}`,category:document.getElementById('productCategory').value.trim(),group:document.getElementById('productGroup').value.trim(),name:document.getElementById('productName').value.trim(),description:document.getElementById('productDescription').value.trim(),image:document.getElementById('productImage').value.trim(),variants,enabled:cur?.enabled!==false,kind:cur?.kind||'item'};try{await saveProduct(p);await loadProducts();form.reset();document.getElementById('editProductId').value='';document.getElementById('saveProduct').textContent='Salvar produto';renderProductRows();renderProducts();fillSaleProducts();}catch(err){alert(`Não foi possível salvar o produto: ${err.message}`);}});document.getElementById('cancelEdit').addEventListener('click',()=>{form.reset();document.getElementById('editProductId').value='';document.getElementById('saveProduct').textContent='Salvar produto';});document.getElementById('productRows').addEventListener('click',async e=>{const b=e.target.closest('[data-product-action]');if(!b)return;const p=state.products.find(x=>x.id===b.dataset.id);if(!p)return;try{if(b.dataset.productAction==='toggle'){await saveProduct({...p,enabled:p.enabled===false});}if(b.dataset.productAction==='edit'){document.getElementById('editProductId').value=p.id;document.getElementById('productName').value=p.name;document.getElementById('productCategory').value=p.category;document.getElementById('productGroup').value=p.group||'';document.getElementById('productImage').value=p.image||'';document.getElementById('productDescription').value=p.description||'';document.getElementById('productVariants').value=(p.variants||[]).map(v=>`${v.label}:${v.price}`).join('; ');document.getElementById('saveProduct').textContent='Atualizar produto';document.querySelector('[data-tab="products"]').click();window.scrollTo({top:0,behavior:'smooth'});return;}if(b.dataset.productAction==='delete'&&confirm(`Remover “${p.name}” do cardápio?`)){if(p.id.startsWith('custom-')){const {error}=await sb.from('product_overrides').delete().eq('product_id',p.id);if(error)throw error;}else await saveProduct({...p,enabled:false});}await loadProducts();renderProductRows();renderProducts();fillSaleProducts();}catch(err){alert(`Não foi possível salvar a alteração: ${err.message}`);}});}
+function renderProductRows(){const root=document.getElementById('productRows');if(!root)return;root.innerHTML=state.products.map(p=>`<tr><td><strong>${esc(p.name)}</strong><br><small class="muted">${esc(p.group||'')}</small></td><td>${esc(p.category)}</td><td>${money(p.variants?.[0]?.price)}</td><td>${p.enabled===false?'Indisponível':'Disponível'}</td><td><button class="btn ghost" data-product-action="edit" data-id="${esc(p.id)}">Editar</button> <button class="btn ghost" data-product-action="toggle" data-id="${esc(p.id)}">${p.enabled===false?'Ativar':'Pausar'}</button> <button class="btn danger" data-product-action="delete" data-id="${esc(p.id)}">Excluir</button></td></tr>`).join('');}
+function setupSettingsValues(){const s=state.settings;document.getElementById('openTime').value=s.openTime;document.getElementById('closeTime').value=s.closeTime;document.getElementById('deliveryFeeInput').value=s.deliveryFee==null?'':s.deliveryFee;document.getElementById('storeOpenToggle').value=String(s.isOpen);}
+function setupSettings(){setupSettingsValues();document.getElementById('settingsForm').addEventListener('submit',async e=>{e.preventDefault();const fee=document.getElementById('deliveryFeeInput').value,s={open_time:document.getElementById('openTime').value||'18:00',close_time:document.getElementById('closeTime').value||'23:00',delivery_fee:fee===''?null:Number(fee),is_open:document.getElementById('storeOpenToggle').value==='true'};const {error}=await sb.from('store_settings').upsert({id:true,...s},{onConflict:'id'});if(error)return alert(`Não foi possível salvar: ${error.message}`);state.settings=fromSettings(s);renderStoreNotice();renderCart();alert('Configurações sincronizadas com o cardápio.');});}
+boot().catch(error=>{console.error(error);message('Falha ao carregar a conexão online. Recarregue a página ou verifique o status do serviço.','error');});
+if(page()==='delivery'){setInterval(()=>{if(document.getElementById('orderHistoryList'))refreshOrderHistory();},30000);}
