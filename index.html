@@ -138,48 +138,51 @@
     .top-whatsapp{background:#16884c}.top-instagram{background:#9b3977}
     .top-contact-links a:hover{filter:brightness(1.08)}
     @media(max-width:650px){.top-contact{margin:10px 12px 18px;grid-template-columns:96px 1fr;gap:10px;padding:9px}.top-facade{width:96px;height:96px}.top-contact-copy strong{font-size:1.05rem}.top-contact-copy span{font-size:.78rem}.top-contact-links{grid-column:1/-1;flex-direction:row;padding:0;gap:8px}.top-contact-links a{flex:1;min-width:0;padding:10px 8px;font-size:.83rem}}
+    /* Página inicial inspirada na Dom Juan, adaptada à Moncef */
+    .store-status{padding:10px 14px;text-align:center;font-size:.9rem;font-weight:900;letter-spacing:.04em}
+    .store-status.is-open{background:#173322;color:#bdeacb;border-bottom:1px solid #245d36}
+    .store-status.is-closed{background:#351d1a;color:#ffc1b4;border-bottom:1px solid #68352d}
+    .hero{min-height:0;display:grid;grid-template-columns:1fr minmax(280px,.95fr);align-items:center;gap:30px;text-align:left;padding:34px max(20px,calc((100% - 1100px)/2));background:#100e0d;color:#f7eee8}
+    .hero:before,.hero:after{display:none}
+    .hero-photo{position:static;inset:auto;width:100%;height:250px;object-fit:cover;object-position:center 65%;border:1px solid #493226;border-radius:20px;opacity:1;box-shadow:0 0 34px #e96a1830}
+    .hero-content{width:100%;max-width:540px;margin:0}
+    .hero .eyebrow{font-size:.78rem;color:#ff8b3d;letter-spacing:.18em}
+    .hero h1{font-size:clamp(2.6rem,6vw,4.6rem);line-height:.98}
+    .hero-content>p:not(.eyebrow){color:#d3c4b9;margin:14px 0 0;font-size:.98rem}
+    .main-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:10px 0 34px}
+    .main-shortcut{display:flex;align-items:center;gap:12px;min-height:84px;padding:15px 16px;background:#191614;color:var(--ink);border:1px solid #352d28;border-radius:17px;text-decoration:none;box-shadow:0 8px 24px #0003;transition:border-color .18s,transform .18s,background .18s}
+    .main-shortcut:hover{border-color:var(--tomato);background:#211812;transform:translateY(-2px)}
+    .main-shortcut-icon{flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#2b211b;font-size:1.2rem}
+    .main-shortcut strong{display:block;font-size:.94rem;line-height:1.2}
+    .main-shortcut small{display:block;color:var(--muted);font-size:.74rem;line-height:1.25;margin-top:4px}
+    .home-screen>.home-intro,.home-screen>.category-grid,.home-screen>.photo-disclaimer{display:none}
+    .info-card{box-shadow:0 8px 24px #0003}
+    @media(max-width:740px){.hero{grid-template-columns:1fr 1fr;gap:18px;padding:28px 20px}.hero-photo{height:210px}.main-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.info-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.hero{grid-template-columns:1fr 1fr;gap:12px;padding:24px 14px}.hero-photo{height:155px;border-radius:15px}.hero-content .brand-logo{width:54px;height:54px;margin-bottom:7px}.hero .eyebrow{font-size:.64rem;letter-spacing:.12em;margin-bottom:8px}.hero h1{font-size:clamp(1.75rem,8vw,2.4rem);line-height:1}.hero-content>p:not(.eyebrow){font-size:.77rem;line-height:1.35;margin-top:9px}.main-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:14px 0 26px}.main-shortcut{min-height:77px;padding:11px 9px;gap:9px;border-radius:14px}.main-shortcut-icon{flex-basis:34px;width:34px;height:34px;font-size:1rem}.main-shortcut strong{font-size:.82rem}.main-shortcut small{font-size:.68rem}.info-grid{grid-template-columns:1fr}.home-screen{margin-bottom:24px}}
   </style>
 </head>
 <body>
+  <div id="storeStatusBanner" class="store-status is-closed" role="status">Carregando horário...</div>
   <header class="hero">
-    <img class="hero-photo" src="pizza.jpg" alt="Pizza da Moncef Gastronomia" loading="eager">
     <div class="hero-content">
       <img class="brand-logo" src="logo.jpg" alt="Logo Moncef Gastronomia">
-      <p class="eyebrow">Sabor que reúne</p>
-      <h1>Moncef<br>Gastronomia<span class="spark">.</span></h1>
-      <p>Pizzas, esfihas, porções, açaí e muito mais — preparados para transformar sua fome em momento especial.</p>
-      <div class="hero-buttons"><a class="hero-cta" href="#categorias">Escolher uma categoria <span aria-hidden="true">↓</span></a></div>
+      <p class="eyebrow">BEM-VINDO À GASTRONOMIA</p>
+      <h1>Moncef<br><span class="spark">Gastronomia</span></h1>
+      <p>Pizzas, esfihas, porções, açaí e muito mais — escolha, monte seu pedido e fale direto com a equipe.</p>
     </div>
+    <img class="hero-photo" src="fachada.jpg" alt="Fachada da Moncef Gastronomia" loading="eager">
   </header>
-  <div class="nav-wrap"><nav aria-label="Atalhos principais">
-    <a href="#categorias">🍽️ Cardápio</a>
-    <a href="#quem-somos">❤️ Quem somos</a>
-    <a href="#como-chegar">📍 Como chegar</a>
-    <a href="https://wa.me/553591543236" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
-    <a href="https://www.instagram.com/moncef_gastronomia/" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
-    <a href="#horarios">🕒 Horário de funcionamento</a>
-  </nav></div>
-  <section class="top-contact" aria-label="Contato da Moncef Gastronomia">
-    <img class="top-facade" src="fachada.jpg" alt="Fachada da Moncef Gastronomia" loading="eager">
-    <div class="top-contact-copy"><strong>Moncef Gastronomia</strong><span>Poços de Caldas · MG</span><span class="top-phone">WhatsApp: +55 (35) 9154-3236</span></div>
-    <div class="top-contact-links"><a class="top-whatsapp" href="https://wa.me/553591543236" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">💬</span> WhatsApp</a><a class="top-instagram" href="https://www.instagram.com/moncef_gastronomia/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">📸</span> Instagram</a></div>
-  </section>
   <main>
     <section class="home-screen" id="inicio">
-      <div class="home-intro" id="categorias">
-        <div class="section-kicker">Escolha por onde começar</div>
-        <h2>O que vai ser hoje?</h2>
-        <p>Toque em uma categoria para ver todos os sabores e preços. Depois, volte aqui para escolher outra.</p>
+      <div class="main-shortcuts" aria-label="Atalhos principais">
+        <a class="main-shortcut" href="delivery.html"><span class="main-shortcut-icon">🍕</span><span><strong>Cardápio online</strong><small>Escolha sabores, monte o pedido e peça pelo WhatsApp</small></span></a>
+        <a class="main-shortcut" href="https://wa.me/553591543236" target="_blank" rel="noopener noreferrer"><span class="main-shortcut-icon">💬</span><span><strong>WhatsApp</strong><small>Fale direto com a Moncef</small></span></a>
+        <a class="main-shortcut" href="https://www.instagram.com/moncef_gastronomia/" target="_blank" rel="noopener noreferrer"><span class="main-shortcut-icon">📸</span><span><strong>Instagram</strong><small>Acompanhe a Moncef Gastronomia</small></span></a>
+        <a class="main-shortcut" href="#como-chegar"><span class="main-shortcut-icon">📍</span><span><strong>Como chegar</strong><small>Peça a localização atualizada</small></span></a>
+        <a class="main-shortcut" href="#quem-somos"><span class="main-shortcut-icon">❤️</span><span><strong>Quem somos</strong><small>Conheça a Moncef</small></span></a>
+        <a class="main-shortcut" href="#horarios"><span class="main-shortcut-icon">🕒</span><span><strong>Horário</strong><small>Todos os dias, 18h às 23h</small></span></a>
+        <a class="main-shortcut" href="delivery.html#historico"><span class="main-shortcut-icon">🧾</span><span><strong>Histórico de pedidos</strong><small>Consulte pedidos salvos neste aparelho</small></span></a>
       </div>
-      <div class="category-grid" aria-label="Categorias do cardápio">
-        <a class="category-card" href="#pizzas"><img src="pizza.jpg" alt="Pizza ilustrativa" loading="lazy"><span class="category-icon">🍕</span><span class="category-title">Pizzas</span><span class="category-desc">Tradicionais, especiais, doces e mais</span><span class="category-action">Ver sabores e preços <span aria-hidden="true">→</span></span></a>
-        <a class="category-card" href="#bordas-complementos"><img src="pizza.jpg" alt="Pizza com borda recheada ilustrativa" loading="lazy"><span class="category-icon">🧀</span><span class="category-title">Bordas e complementos</span><span class="category-desc">Bordas recheadas e monte sua pizza</span><span class="category-action">Ver opções e preços <span aria-hidden="true">→</span></span></a>
-        <a class="category-card" href="#esfihas"><img src="esfihas.jpg" alt="Esfihas ilustrativas" loading="lazy"><span class="category-icon">🥟</span><span class="category-title">Esfihas</span><span class="category-desc">Tradicionais, gourmet, doces e combos</span><span class="category-action">Ver sabores e preços <span aria-hidden="true">→</span></span></a>
-        <a class="category-card" href="#porcoes"><img src="porcoes.jpg" alt="Porções ilustrativas" loading="lazy"><span class="category-icon">🍟</span><span class="category-title">Porções</span><span class="category-desc">Batatas, petiscos e pratos para dividir</span><span class="category-action">Ver opções e preços <span aria-hidden="true">→</span></span></a>
-        <a class="category-card" href="#acai"><img src="acai-bebidas.jpg" alt="Açaí ilustrativo" loading="lazy"><span class="category-icon">🍧</span><span class="category-title">Açaí e vitaminas</span><span class="category-desc">Tamanhos, adicionais e vitaminas</span><span class="category-action">Ver opções e preços <span aria-hidden="true">→</span></span></a>
-        <a class="category-card" href="#bebidas"><img src="acai-bebidas.jpg" alt="Bebidas ilustrativas" loading="lazy"><span class="category-icon">🥤</span><span class="category-title">Bebidas</span><span class="category-desc">Sucos, refrigerantes, cervejas e vinhos</span><span class="category-action">Ver bebidas e preços <span aria-hidden="true">→</span></span></a>
-      </div>
-      <p class="photo-disclaimer">As fotos dos produtos são ilustrativas; a apresentação real pode variar.</p>
       <div class="info-grid" aria-label="Informações da Moncef Gastronomia">
         <article class="info-card" id="quem-somos"><div class="section-kicker">❤️ Nossa casa</div><h3>Quem somos</h3><p>A Moncef Gastronomia reúne pizzas, esfihas, porções, açaí e bebidas em um cardápio variado. Consulte a equipe para confirmar a disponibilidade dos sabores.</p></article>
         <article class="info-card" id="como-chegar"><div class="section-kicker">📍 Visite a Moncef</div><h3>Como chegar</h3><p>Chame a equipe no WhatsApp para receber o endereço e a localização atualizados.</p><a class="info-link" href="https://wa.me/553591543236" target="_blank" rel="noopener noreferrer">Pedir localização pelo WhatsApp →</a></article>
@@ -344,5 +347,18 @@
     </section>
     <p class="footer-note">Valores apresentados conforme o cardápio enviado. Consulte disponibilidade dos sabores no momento do pedido.</p>
   </main>
+  <script>
+    (()=>{
+      const banner=document.getElementById('storeStatusBanner');
+      const update=()=>{
+        const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+        const hour=Number(parts.find(x=>x.type==='hour')?.value||0), minute=Number(parts.find(x=>x.type==='minute')?.value||0), now=hour*60+minute;
+        const open=now>=18*60&&now<23*60;
+        banner.classList.toggle('is-open',open); banner.classList.toggle('is-closed',!open);
+        banner.textContent=open?'ABERTO AGORA · Pedidos disponíveis até às 23h.':`FECHADO · Voltamos ${now>=23*60?'amanhã':'hoje'} às 18h.`;
+      };
+      update(); setInterval(update,60000);
+    })();
+  </script>
 </body>
 </html>

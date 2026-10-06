@@ -1,15 +1,18 @@
-# Moncef Gastronomia — Cardápio e demonstração
+# Moncef Gastronomia — cardápio e solicitação de delivery
 
-[Cardápio informativo ao vivo](https://m20513703-art.github.io/moncef-gastronomia-cardapio/)
+[Site](https://m20513703-art.github.io/moncef-gastronomia-cardapio/) · [Cardápio interativo](https://m20513703-art.github.io/moncef-gastronomia-cardapio/delivery.html) · [PDV demonstrativo](https://m20513703-art.github.io/moncef-gastronomia-cardapio/pdv.html)
 
-## Protótipo de delivery e PDV
+## Páginas e arquivos
 
-- `delivery.html` — navegação por categorias, carrinho, personalização de pizzas e açaí, checkout demonstrativo.
-- `pdv.html` — fila de pedidos, venda de balcão, cadastro/edição/indisponibilidade de produtos e configuração de horário/taxa.
-- `app.js` — lógica compartilhada entre as duas telas.
-- `catalog.json` — itens e preços derivados do cardápio já fornecido.
-- `delivery-pdv.css` — estilos das duas telas.
+- `index.html` — página inicial e atalhos para o cardápio interativo, WhatsApp, Instagram, informações e histórico.
+- `delivery.html` — catálogo por categorias, seleção de opções e personalizações, carrinho, histórico local e formulário de solicitação. Finalizar prepara uma mensagem para o WhatsApp da Moncef; o cliente ainda precisa revisar e tocar em **Enviar**.
+- `pdv.html` — demonstração local de vendas de balcão, fila, cadastro/edição/disponibilidade de produtos e configurações. Não é integrado ao WhatsApp nem sincroniza entre dispositivos.
+- `app.js` — lógica das telas de delivery e PDV.
+- `catalog.json` — catálogo de produtos e opções.
+- `delivery-pdv.css` — estilos das telas de delivery e PDV.
 
-A demonstração grava produtos, pedidos e configurações no armazenamento local do navegador. As telas sincronizam apenas no mesmo navegador/aparelho; não há servidor, banco de dados, cobrança, envio à loja nem autenticação do PDV. Não use dados reais de clientes. Para operação real em vários aparelhos, receber pedidos e proteger o PDV, será necessário backend e banco de dados.
+## Limitações e dados comerciais
 
-Horário de funcionamento informado pelo usuário: todos os dias, das 18h às 23h. A taxa de entrega ainda usa R$ 0,00 como exemplo e precisa de confirmação. A divisão de pizzas meio a meio usa temporariamente o preço do sabor mais caro; confirmar a regra comercial. Fotos de produtos são ilustrativas.
+O site estático não possui servidor ou banco de dados. O histórico do cardápio fica apenas no navegador/aparelho em que a solicitação foi preparada; não informa se a mensagem foi enviada, não acompanha o status real do pedido e não sincroniza com o PDV. Para receber pedidos e atualizar status entre aparelhos, além de proteger o acesso ao PDV, é necessário implementar um backend e banco de dados.
+
+Horário informado: todos os dias, das 18h às 23h. Taxa de entrega e regra de preço para pizza meio a meio ainda precisam ser confirmadas pela Moncef; por isso o cardápio informa que esses valores serão confirmados no WhatsApp. As fotos de produtos são ilustrativas quando não identificam imagens próprias dos itens.

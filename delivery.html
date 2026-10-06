@@ -3,31 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Peça online | Moncef Gastronomia</title>
-  <link rel="stylesheet" href="delivery-pdv.css?v=20261006">
-  <script src="app.js?v=20261006" defer></script>
+  <title>Cardápio e delivery | Moncef Gastronomia</title>
+  <link rel="stylesheet" href="delivery-pdv.css?v=20261006b">
+  <script src="app.js?v=20261006b" defer></script>
 </head>
 <body data-page="delivery">
-  <div class="demo-banner">DEMONSTRAÇÃO — pedidos e alterações ficam somente neste navegador; não é sistema de produção.</div>
   <header class="topbar">
-    <a class="brand" href="index.html"><img src="logo.jpg" alt=""><span><strong>Moncef Gastronomia</strong><small>Cardápio de delivery</small></span></a>
+    <a class="brand" href="index.html"><img src="logo.jpg" alt=""><span><strong>Moncef Gastronomia</strong><small>Cardápio e delivery</small></span></a>
     <nav class="top-actions" aria-label="Navegação principal">
       <a class="btn secondary" href="index.html">Página inicial</a>
+      <a class="btn secondary" href="#historico">Histórico de pedidos</a>
     </nav>
   </header>
   <main class="page-wrap">
     <section class="intro hero-intro">
       <div class="hero-copy">
-        <p class="eyebrow">BEM-VINDO AO DELIVERY</p>
+        <p class="eyebrow">CARDÁPIO E DELIVERY</p>
         <h1>Moncef<br><span>Gastronomia</span></h1>
-        <p>Escolha seus sabores, monte seu pedido e aproveite. Esta é uma demonstração interativa.</p>
+        <p>Escolha uma categoria, personalize os produtos e monte seu pedido. Ao finalizar, você confere a mensagem no WhatsApp antes de enviá-la para a loja.</p>
         <div id="storeNotice" class="notice">Carregando disponibilidade...</div>
       </div>
       <img class="hero-showcase" src="fachada.jpg" alt="Fachada da Moncef Gastronomia">
     </section>
     <div class="shop-layout">
-      <section aria-label="Cardápio">
-        <div class="section-head"><div><h2>O que vai ser hoje?</h2><span class="muted">Escolha uma categoria para ver sabores e preços.</span></div></div>
+      <section id="menu" aria-label="Cardápio">
+        <div class="section-head"><div><h2>O que vai ser hoje?</h2><span class="muted">Escolha uma categoria para ver sabores, opções e preços.</span></div></div>
         <div id="categoryTabs" class="category-tabs" aria-label="Categorias"></div>
         <div id="products" class="product-grid"></div>
       </section>
@@ -35,31 +35,36 @@
         <h2>🛒 Seu pedido <span id="cartCount" class="status-chip">0</span></h2>
         <div id="cartItems" class="cart-empty">Seu carrinho está vazio.</div>
         <div class="totals">
-          <div class="total-row"><span>Subtotal</span><strong id="cartSubtotal">R$ 0,00</strong></div>
-          <div class="total-row"><span>Entrega (demo)</span><strong id="deliveryFee">R$ 0,00</strong></div>
-          <div class="total-row total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+          <div class="total-row"><span>Subtotal dos itens</span><strong id="cartSubtotal">R$ 0,00</strong></div>
+          <div class="total-row"><span>Taxa de entrega</span><strong id="deliveryFee">A confirmar</strong></div>
+          <div class="total-row total"><span>Total final</span><strong id="cartTotal">A confirmar no WhatsApp</strong></div>
         </div>
-        <button id="checkoutButton" class="btn" type="button">Continuar pedido</button>
-        <p class="small-note">Na demonstração, não ocorre cobrança nem envio à loja. O pedido aparece no PDV aberto no mesmo navegador.</p>
+        <button id="checkoutButton" class="btn" type="button">Continuar no WhatsApp</button>
+        <p class="small-note">A taxa de entrega e o valor final são confirmados pela equipe. O pedido só chega à loja quando você tocar em <strong>Enviar</strong> no WhatsApp.</p>
       </aside>
     </div>
+
+    <section id="historico" class="history-section" aria-labelledby="historyHeading" style="margin-top:34px;scroll-margin-top:20px">
+      <div class="section-head"><div><h2 id="historyHeading">Histórico de pedidos</h2><span class="muted">Pedidos preparados neste navegador. O histórico fica salvo somente neste aparelho.</span></div></div>
+      <div id="orderHistoryList" class="orders-grid"><div class="panel muted">Carregando histórico...</div></div>
+    </section>
   </main>
   <dialog id="checkoutModal" class="modal">
-    <div class="modal-head"><h2>Dados do pedido</h2><button class="modal-close" type="button" data-close="checkoutModal" aria-label="Fechar">×</button></div>
+    <div class="modal-head"><h2>Dados para entrega</h2><button class="modal-close" type="button" data-close="checkoutModal" aria-label="Fechar">×</button></div>
     <form id="checkoutForm" class="modal-body">
-      <p class="notice">Use dados fictícios nesta demonstração. Não informe telefone ou endereço real.</p>
+      <p class="notice">Ao continuar, abriremos uma conversa com o pedido preenchido. Confira os dados e toque em <strong>Enviar</strong> no WhatsApp para encaminhar à Moncef. A taxa de entrega e o total final serão confirmados pela equipe.</p>
       <div class="form-grid">
         <div class="field"><label for="customerName">Nome</label><input id="customerName" name="customerName" required autocomplete="name"></div>
-        <div class="field"><label for="customerPhone">Telefone de demonstração</label><input id="customerPhone" name="customerPhone" required autocomplete="off"></div>
-        <div class="field wide"><label for="customerAddress">Endereço de entrega</label><input id="customerAddress" name="customerAddress" required autocomplete="off" placeholder="Rua, número, bairro"></div>
-        <div class="field"><label for="paymentMethod">Forma de pagamento (demo)</label><select id="paymentMethod" name="paymentMethod"><option>Pix</option><option>Dinheiro</option><option>Cartão na entrega</option></select></div>
+        <div class="field"><label for="customerPhone">Telefone para contato</label><input id="customerPhone" name="customerPhone" type="tel" required autocomplete="tel" placeholder="(35) 99999-9999"></div>
+        <div class="field wide"><label for="customerAddress">Endereço de entrega</label><input id="customerAddress" name="customerAddress" required autocomplete="street-address" placeholder="Rua, número e bairro"></div>
+        <div class="field"><label for="paymentMethod">Forma de pagamento desejada</label><select id="paymentMethod" name="paymentMethod"><option>Pix</option><option>Dinheiro</option><option>Cartão na entrega</option></select></div>
         <div class="field"><label for="changeFor">Troco para (se necessário)</label><input id="changeFor" name="changeFor" placeholder="Ex.: R$ 100" inputmode="decimal"></div>
-        <div class="field wide"><label for="orderNotes">Observações</label><textarea id="orderNotes" name="orderNotes" placeholder="Instruções de entrega (somente fictícias)"></textarea></div>
+        <div class="field wide"><label for="orderNotes">Observações</label><textarea id="orderNotes" name="orderNotes" placeholder="Instruções para a entrega ou para o preparo"></textarea></div>
       </div>
-      <button class="btn" type="submit">Criar pedido de demonstração</button>
+      <button class="btn" type="submit">Abrir pedido no WhatsApp</button>
       <div id="orderConfirmation" class="success-box hide"></div>
     </form>
   </dialog>
-  <footer class="footer-note">Cardápio e PDV em modo de demonstração. A sincronização usa o mesmo navegador e aparelho (armazenamento local), não um servidor.</footer>
+  <footer class="footer-note">O pedido é encaminhado à Moncef pelo WhatsApp somente depois que você tocar em Enviar. O histórico fica salvo neste navegador e não sincroniza com outros aparelhos. O PDV separado é uma demonstração local e não recebe automaticamente pedidos do WhatsApp.</footer>
 </body>
 </html>

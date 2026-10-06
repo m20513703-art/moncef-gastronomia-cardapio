@@ -1,4 +1,7 @@
 const STORE_KEY = 'moncef_delivery_pdv_demo_v1';
+const ORDER_HISTORY_KEY = 'moncef_customer_order_history_v1';
+const readOrderHistory = () => { try { const value=JSON.parse(localStorage.getItem(ORDER_HISTORY_KEY)||'[]'); return Array.isArray(value)?value:[]; } catch { return []; } };
+const saveOrderHistory = value => localStorage.setItem(ORDER_HISTORY_KEY, JSON.stringify(value));
 const STATUS = ['Novo', 'Em preparo', 'Pronto', 'Saiu para entrega', 'Concluído', 'Cancelado'];
 const money = n => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(n || 0));
 const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
@@ -41,7 +44,7 @@ function priceVariants(product) {
   return (product.variants || []).map(v => `<option value="${esc(v.label)}">${esc(v.label)} · ${money(v.price)}</option>`).join('');
 }
 function initDelivery() {
-  renderCategories(); renderProducts(); renderCart(); renderStoreNotice();
+  renderCategories(); renderProducts(); renderCart(); renderStoreNotice(); renderOrderHistory();
   document.getElementById('categoryTabs').addEventListener('click', e => {
     const button = e.target.closest('[data-category]'); if (!button) return;
     activeCategory = button.dataset.category;
@@ -53,7 +56,7 @@ function initDelivery() {
     if (e.target.matches('[data-flavor2]')) updateCardPrice(e.target.closest('.product-card'));
     if (e.target.matches('[data-topping]')) {
       const card=e.target.closest('.product-card');
-      if(card.querySelectorAll('[data-topping]:checked').length>5){e.target.checked=false;alert('Na demonstração, escolha até cinco ingredientes.');}
+      if(card.querySelectorAll('[data-topping]:checked').length>5){e.target.checked=false;alert('Escolha até cinco ingredientes.');}
     }
     if (e.target.matches('[data-extra-check]')) updateCardPrice(e.target.closest('.product-card'));
   });
@@ -78,22 +81,35 @@ function initDelivery() {
   });
   document.getElementById('checkoutForm').addEventListener('submit', e => {
     e.preventDefault();
-    if (!cart.length || !isOpenNow()) { alert('A loja está fechada na demonstração ou o carrinho está vazio.'); return; }
+    if (!cart.length || !isOpenNow()) { alert('A loja está fechada ou o carrinho está vazio.'); return; }
     const data = new FormData(e.currentTarget);
-    const subtotal = cart.reduce((sum, line) => sum + line.unitPrice * line.qty, 0);
-    const fee = Number(state.settings.deliveryFee || 0);
-    const order = {
-      id: `DEMO-${Date.now().toString().slice(-6)}`,
-      channel: 'Delivery', status: 'Novo', createdAt: new Date().toISOString(),
-      customer: { name: data.get('customerName'), phone: data.get('customerPhone'), address: data.get('customerAddress'), notes: data.get('orderNotes') },
-      payment: data.get('paymentMethod'), changeFor: data.get('changeFor'),
-      items: cart.map(x => ({ ...x })), subtotal, deliveryFee: fee, total: subtotal + fee, demo: true
-    };
-    state.orders.unshift(order); save(); cart = []; renderCart(); renderOrders();
-    const box = document.getElementById('orderConfirmation');
-    box.innerHTML = `<strong>Pedido ${esc(order.id)} criado.</strong><br>Ele já aparece na aba de pedidos do PDV neste navegador. Nenhuma mensagem foi enviada à loja.`;
-    box.classList.remove('hide');
-    e.currentTarget.reset();
+    const id = `MON-${Date.now().toString().slice(-6)}`;
+    const items = cart.map(x => ({ ...x }));
+    const subtotalKnown = items.reduce((sum, line) => sum + (line.pricePending ? 0 : line.unitPrice * line.qty), 0);
+    const messageLines = [
+      'Olá! Quero fazer um pedido pelo cardápio online da Moncef Gastronomia.',
+      `Pedido: ${id}`,
+      `Nome: ${data.get('customerName')}`,
+      `WhatsApp/telefone: ${data.get('customerPhone')}`,
+      `Endereço de entrega: ${data.get('customerAddress')}`,
+      `Pagamento desejado: ${data.get('paymentMethod')}`,
+      data.get('changeFor') ? `Troco para: ${data.get('changeFor')}` : '',
+      'Itens:',
+      ...items.map(line => `${line.qty}× ${line.name} (${line.variant})${line.description ? ` — ${line.description}` : ''} — ${line.pricePending ? 'preço a confirmar' : money(line.unitPrice * line.qty)}`),
+      `Subtotal de itens com preço definido: ${money(subtotalKnown)}`,
+      'Taxa de entrega e total final: confirmar com a equipe.',
+      data.get('orderNotes') ? `Observações: ${data.get('orderNotes')}` : ''
+    ].filter(Boolean);
+    const historyItem = { id, createdAt: new Date().toISOString(), items, subtotalKnown, payment: String(data.get('paymentMethod') || '') };
+    saveOrderHistory([historyItem, ...readOrderHistory()].slice(0, 50));
+    cart = []; renderCart(); renderOrderHistory(); e.currentTarget.reset();
+    document.getElementById('checkoutModal').close();
+    window.location.href = `https://wa.me/553591543236?text=${encodeURIComponent(messageLines.join('\n'))}`;
+  });
+  document.getElementById('orderHistoryList').addEventListener('click', e => {
+    const button = e.target.closest('[data-repeat-order]'); if (!button) return;
+    const saved = readOrderHistory().find(x => x.id === button.dataset.repeatOrder); if (!saved) return;
+    cart = saved.items.map(x => ({ ...x })); renderCart(); document.getElementById('checkoutButton').scrollIntoView({behavior:'smooth',block:'center'});
   });
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.close).close()));
 }
@@ -111,12 +127,12 @@ function renderProducts() {
   const root = document.getElementById('products');
   root.innerHTML = products.map(p => {
     const v = p.variants?.[0] || { label:'unidade', price:0 };
-    const pizzaOptions = p.kind === 'pizza' ? `<details class="customization"><summary>Combinar dois sabores (opcional)</summary><label>Segundo sabor · preço de exemplo pelo sabor mais caro</label><select data-flavor2><option value="">Sem segundo sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false && x.id !== p.id).map(x => `<option value="${esc(x.id)}">${esc(x.name)} · ${money(productUnitPrice(x, v.label))}</option>`).join('')}</select></details>` : '';
-    const calzoneOptions = p.kind === 'calzone' ? `<details class="customization"><summary>Escolher sabor</summary><label>Sabor do calzone (demo)</label><select data-calzone-flavor><option value="">Escolha um sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false).map(x => `<option>${esc(x.name)}</option>`).join('')}</select></details>` : '';
+    const pizzaOptions = p.kind === 'pizza' ? `<details class="customization"><summary>Combinar dois sabores (opcional)</summary><label>Segundo sabor · o valor final será confirmado pelo atendimento</label><select data-flavor2><option value="">Sem segundo sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false && x.id !== p.id).map(x => `<option value="${esc(x.id)}">${esc(x.name)} · ${money(productUnitPrice(x, v.label))}</option>`).join('')}</select></details>` : '';
+    const calzoneOptions = p.kind === 'calzone' ? `<details class="customization"><summary>Escolher sabor</summary><label>Sabor do calzone</label><select data-calzone-flavor><option value="">Escolha um sabor</option>${state.products.filter(x => x.kind === 'pizza' && x.enabled !== false).map(x => `<option>${esc(x.name)}</option>`).join('')}</select></details>` : '';
     const crustOptions = p.kind === 'crust' ? `<details class="customization"><summary>Escolher sabor da borda</summary><select data-crust-flavor><option>Catupiry</option><option>Cheddar</option><option>Chocolate</option><option>Cream cheese</option></select></details>` : '';
     const toppingList = ['Calabresa','Cebola','Frango desfiado','Milho','Bacon','Champignon','Palmito','Tomate','Presunto','Requeijão','Cheddar','Azeitona','Ovo','Brócolis','Costela','Carne seca'];
-    const customPizza = p.kind === 'custom-pizza' ? `<details class="customization"><summary>Escolher até 5 ingredientes (lista demo)</summary><div class="extras-list">${toppingList.map(x => `<div class="extra-option"><label><input data-topping="${esc(x)}" type="checkbox"> ${esc(x)}</label></div>`).join('')}</div></details>` : '';
-    const extras = p.kind === 'acai' ? `<details><summary>Adicionar complementos (valores demonstrativos)</summary><div class="extras-list">${addOns.map(x => `<div class="extra-option"><label><input data-extra-check="${esc(x.id)}" type="checkbox"> ${esc(x.name)}</label><strong>${money(x.variants?.[0]?.price)}</strong></div>`).join('')}</div></details>` : '';
+    const customPizza = p.kind === 'custom-pizza' ? `<details class="customization"><summary>Escolher até 5 ingredientes</summary><div class="extras-list">${toppingList.map(x => `<div class="extra-option"><label><input data-topping="${esc(x)}" type="checkbox"> ${esc(x)}</label></div>`).join('')}</div></details>` : '';
+    const extras = p.kind === 'acai' ? `<details><summary>Adicionar complementos</summary><div class="extras-list">${addOns.map(x => `<div class="extra-option"><label><input data-extra-check="${esc(x.id)}" type="checkbox"> ${esc(x.name)}</label><strong>${money(x.variants?.[0]?.price)}</strong></div>`).join('')}</div></details>` : '';
     return `<article class="product-card" data-id="${esc(p.id)}" data-kind="${esc(p.kind||'item')}">${p.image?`<img class="product-thumb" src="${esc(p.image)}" alt="Foto ilustrativa de ${esc(p.name)}" loading="lazy">`:''}<div class="product-group">${esc(p.category)} · ${esc(p.group||'')}</div><h3>${esc(p.name)}</h3>${p.description?`<p class="product-desc">${esc(p.description)}</p>`:''}<label>Opção / tamanho</label><select data-variant>${priceVariants(p)}</select>${pizzaOptions}${calzoneOptions}${crustOptions}${customPizza}${extras}<div class="product-bottom"><span class="price" data-card-price>${money(v.price)}</span><button class="btn" data-add type="button">Adicionar</button></div></article>`;
   }).join('') || '<p class="muted">Não há itens disponíveis nesta categoria.</p>';
 }
@@ -126,51 +142,57 @@ function updateCardPrice(card) {
   const label = card.querySelector('[data-variant]')?.value;
   let value = productUnitPrice(p, label);
   const secondId = card.querySelector('[data-flavor2]')?.value;
-  if (secondId) { const second = state.products.find(x => x.id === secondId); if (second) value = Math.max(value, productUnitPrice(second, label)); }
+  if (secondId) { card.querySelector('[data-card-price]').textContent = 'A confirmar'; return; }
   card.querySelectorAll('[data-extra-check]:checked').forEach(check => { const extra=state.products.find(x=>x.id===check.dataset.extraCheck); if(extra) value += productUnitPrice(extra, extra.variants?.[0]?.label); });
   card.querySelector('[data-card-price]').textContent = money(value);
 }
 function addProductToCart(id, card) {
   const p = state.products.find(x => x.id === id); if (!p || p.enabled === false) return;
   const variant = card.querySelector('[data-variant]')?.value || p.variants?.[0]?.label || 'unidade';
-  let unitPrice = productUnitPrice(p, variant); let name = p.name; let description = p.description || '';
+  let unitPrice = productUnitPrice(p, variant); let name = p.name; let description = p.description || ''; let pricePending = false;
   const flavor2 = card.querySelector('[data-flavor2]')?.value;
   if (flavor2) {
-    const p2 = state.products.find(x => x.id === flavor2); if (p2) { unitPrice = Math.max(unitPrice, productUnitPrice(p2, variant)); name += ` meio a meio: ${p2.name}`; description += ' · Cálculo demonstrativo pelo sabor de maior valor.'; }
+    const p2 = state.products.find(x => x.id === flavor2); if (p2) { pricePending = true; unitPrice = 0; name += ` meio a meio: ${p2.name}`; description += ' · Valor final da combinação a confirmar pelo WhatsApp.'; }
   }
   const calzoneFlavor=card.querySelector('[data-calzone-flavor]')?.value;
   if(p.kind==='calzone') { if(!calzoneFlavor){alert('Escolha o sabor do calzone.');return;} description+=` · Sabor: ${calzoneFlavor}`; }
   const crustFlavor=card.querySelector('[data-crust-flavor]')?.value;
   if(p.kind==='crust'&&crustFlavor) description+=` · Borda: ${crustFlavor}`;
   const toppings=[...card.querySelectorAll('[data-topping]:checked')].map(x=>x.dataset.topping);
-  if(p.kind==='custom-pizza') { if(toppings.length>5){alert('Escolha até cinco ingredientes.');return;} description+=` · Ingredientes demo: ${toppings.join(', ')||'a escolher'}`; }
+  if(p.kind==='custom-pizza') { if(toppings.length>5){alert('Escolha até cinco ingredientes.');return;} description+=` · Ingredientes: ${toppings.join(', ')||'a escolher'}`; }
   const selectedExtras = [...card.querySelectorAll('[data-extra-check]:checked')].map(check => state.products.find(x => x.id === check.dataset.extraCheck)).filter(Boolean);
   if (selectedExtras.length) { unitPrice += selectedExtras.reduce((sum,x)=>sum+productUnitPrice(x,x.variants?.[0]?.label),0); description += ` · Adicionais: ${selectedExtras.map(x=>x.name).join(', ')}`; }
   const key = `${p.id}-${variant}-${flavor2||calzoneFlavor||''}-${crustFlavor||''}-${toppings.join(',')}-${selectedExtras.map(x=>x.id).join(',')}`;
   const found = cart.find(x => x.key === key);
   if (found) found.qty++;
-  else cart.push({ key, productId:p.id, name, variant, description, unitPrice, qty:1 });
+  else cart.push({ key, productId:p.id, name, variant, description, unitPrice, pricePending, qty:1 });
   renderCart();
 }
 function renderCart() {
   const root = document.getElementById('cartItems'); if (!root) return;
   const count = cart.reduce((n,x)=>n+x.qty,0); document.getElementById('cartCount').textContent = count;
   if (!cart.length) root.innerHTML = '<div class="cart-empty">Seu carrinho está vazio.</div>';
-  else root.innerHTML = cart.map((x,i)=>`<div class="cart-line"><div class="cart-line-head"><span>${esc(x.qty)}× ${esc(x.name)}</span><strong>${money(x.unitPrice*x.qty)}</strong></div><small>${esc(x.variant)}${x.description?` · ${esc(x.description)}`:''}</small><div class="cart-line-controls"><button type="button" data-cart-action="minus" data-index="${i}" aria-label="Diminuir">−</button><span>${x.qty}</span><button type="button" data-cart-action="plus" data-index="${i}" aria-label="Aumentar">+</button><button type="button" data-cart-action="remove" data-index="${i}">Remover</button></div></div>`).join('');
-  const subtotal = cart.reduce((n,x)=>n+x.unitPrice*x.qty,0); const fee=Number(state.settings.deliveryFee||0);
-  document.getElementById('cartSubtotal').textContent=money(subtotal);document.getElementById('deliveryFee').textContent=money(fee);document.getElementById('cartTotal').textContent=money(subtotal+fee);
-  const button=document.getElementById('checkoutButton');button.disabled=!cart.length||!isOpenNow();button.title=!isOpenNow()?'A loja está fechada ou fora do horário configurado':'';
+  else root.innerHTML = cart.map((x,i)=>`<div class="cart-line"><div class="cart-line-head"><span>${esc(x.qty)}× ${esc(x.name)}</span><strong>${x.pricePending?'Preço a confirmar':money(x.unitPrice*x.qty)}</strong></div><small>${esc(x.variant)}${x.description?` · ${esc(x.description)}`:''}</small><div class="cart-line-controls"><button type="button" data-cart-action="minus" data-index="${i}" aria-label="Diminuir">−</button><span>${x.qty}</span><button type="button" data-cart-action="plus" data-index="${i}" aria-label="Aumentar">+</button><button type="button" data-cart-action="remove" data-index="${i}">Remover</button></div></div>`).join('');
+  const subtotal = cart.reduce((n,x)=>n+(x.pricePending?0:x.unitPrice*x.qty),0);
+  document.getElementById('cartSubtotal').textContent=money(subtotal);document.getElementById('deliveryFee').textContent='A confirmar';document.getElementById('cartTotal').textContent='A confirmar no WhatsApp';
+  const button=document.getElementById('checkoutButton');button.disabled=!cart.length||!isOpenNow();button.title=!isOpenNow()?'A loja está fechada; pedidos disponíveis todos os dias, das 18h às 23h.':'';
+}
+function renderOrderHistory() {
+  const root=document.getElementById('orderHistoryList'); if(!root) return;
+  const orders=readOrderHistory();
+  if(!orders.length){root.innerHTML='<div class="panel muted">Seus pedidos preparados neste aparelho vão aparecer aqui.</div>';return;}
+  root.innerHTML=orders.map(order=>`<article class="order-card"><div class="product-group">Pedido ${esc(order.id)}</div><h3>Solicitação <span class="status-chip">Preparada para WhatsApp</span></h3><div class="order-meta">${new Date(order.createdAt).toLocaleString('pt-BR')} · salvo neste aparelho</div><div class="order-items">${(order.items||[]).map(line=>`<div>${esc(line.qty)}× ${esc(line.name)} (${esc(line.variant)}) — ${line.pricePending?'preço a confirmar':money(line.unitPrice*line.qty)}</div>${line.description?`<small class="muted">${esc(line.description)}</small>`:''}`).join('')}<div class="total-row"><span>Subtotal com preço definido</span><strong>${money(order.subtotalKnown||0)}</strong></div><small class="muted">A taxa e o valor final são confirmados pela Moncef. Este registro não confirma que a mensagem foi enviada.</small></div><button class="btn secondary" type="button" data-repeat-order="${esc(order.id)}">Repetir pedido</button></article>`).join('');
 }
 function isOpenNow() {
-  const s=state.settings||{}; if(s.isOpen===false) return false;
-  const open=s.openTime||'18:00', close=s.closeTime||'23:00';
-  const now=new Date(); const mins=now.getHours()*60+now.getMinutes();
+  const s=state.settings||{}; if(s.isOpen===false) return false; const open=s.openTime||'18:00', close=s.closeTime||'23:00';
+  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+  const mins=Number(parts.find(x=>x.type==='hour')?.value||0)*60+Number(parts.find(x=>x.type==='minute')?.value||0);
   const a=Number(open.slice(0,2))*60+Number(open.slice(3,5)); const b=Number(close.slice(0,2))*60+Number(close.slice(3,5));
-  return a<=b ? mins>=a&&mins<=b : mins>=a||mins<=b;
+  return a<=b ? mins>=a&&mins<b : mins>=a||mins<b;
 }
 function renderStoreNotice() {
   const s=state.settings||{}; const open=isOpenNow();
-  const msg=`${open?'🟢 Aberto na demonstração':'🔴 Fechado / fora do horário'} · Funcionamento informado: ${esc(s.openTime||'18:00')}–${esc(s.closeTime||'23:00')} · Entrega: ${money(s.deliveryFee||0)} (taxa demonstrativa; confirmar).`;
+  const msg=`${open?'🟢 Aberto agora':'🔴 Fechado'} · Todos os dias, ${esc(s.openTime||'18:00')}–${esc(s.closeTime||'23:00')} · Taxa de entrega a confirmar no WhatsApp.`;
   const el=document.getElementById('storeNotice');if(el){el.textContent=msg;el.classList.toggle('closed',!open);}
   const pdv=document.getElementById('pdvStoreNotice');if(pdv){pdv.textContent=msg;pdv.classList.toggle('closed',!open);}
 }
