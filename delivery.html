@@ -6,7 +6,7 @@
   <title>Cardápio e delivery | Moncef Gastronomia</title>
   <link rel="stylesheet" href="delivery-pdv.css?v=20261006g">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20261006g" defer></script>
+  <script src="app.js?v=20261006h" defer></script>
 </head>
 <body data-page="delivery">
   <header class="topbar">
@@ -21,7 +21,7 @@
       <div class="hero-copy">
         <p class="eyebrow">CARDÁPIO E DELIVERY</p>
         <h1>Moncef<br><span>Gastronomia</span></h1>
-        <p>Escolha uma categoria, personalize os produtos e monte seu pedido para a fila do PDV.</p>
+        <p>Escolha, personalize e envie seu pedido para a Moncef.</p>
         <div id="storeNotice" class="notice">Carregando disponibilidade...</div>
       </div>
       <img class="hero-showcase" src="fachada.jpg" alt="Fachada da Moncef Gastronomia">
@@ -33,10 +33,10 @@
         <div class="totals">
           <div class="total-row"><span>Subtotal dos itens</span><strong id="cartSubtotal">R$ 0,00</strong></div>
           <div class="total-row"><span>Taxa de entrega</span><strong id="deliveryFee">A confirmar</strong></div>
-          <div class="total-row total"><span>Total final</span><strong id="cartTotal">A confirmar pelo PDV</strong></div>
+          <div class="total-row total"><span>Total final</span><strong id="cartTotal">A confirmar pela equipe</strong></div>
         </div>
-        <button id="checkoutButton" class="btn" type="button">Enviar pedido ao PDV</button>
-        <p class="small-note">Seu pedido é registrado online e enviado diretamente à fila do PDV.</p>
+        <button id="checkoutButton" class="btn" type="button">Enviar pedido</button>
+        <p class="small-note">Depois de confirmar, a equipe da Moncef recebe seu pedido.</p>
       </aside>
       <section id="menu" aria-label="Cardápio">
         <div class="section-head"><div><h2>O que vai ser hoje?</h2><span class="muted">Escolha uma categoria para ver sabores, opções e preços.</span></div></div>
@@ -46,14 +46,14 @@
     </div>
 
     <section id="historico" class="history-section" aria-labelledby="historyHeading" style="margin-top:34px;scroll-margin-top:20px">
-      <div class="section-head"><div><h2 id="historyHeading">Histórico de pedidos</h2><span class="muted">O status é atualizado a partir da fila online do PDV.</span></div></div>
+      <div class="section-head"><div><h2 id="historyHeading">Histórico de pedidos</h2><span class="muted">Acompanhe aqui as atualizações do seu pedido.</span></div></div>
       <div id="orderHistoryList" class="orders-grid"><div class="panel muted">Carregando histórico...</div></div>
     </section>
   </main>
   <dialog id="checkoutModal" class="modal">
     <div class="modal-head"><h2>Dados para entrega</h2><button class="modal-close" type="button" data-close="checkoutModal" aria-label="Fechar">×</button></div>
     <form id="checkoutForm" class="modal-body">
-      <p class="notice">O pedido será registrado online e aparecerá no PDV da Moncef. A taxa e o total final serão confirmados pela equipe.</p>
+      <p class="notice">Confira seus dados antes de enviar. A equipe da Moncef confirmará a taxa de entrega e o total final.</p>
       <div class="form-grid">
         <div class="field"><label for="customerName">Nome</label><input id="customerName" name="customerName" required autocomplete="name"></div>
         <div class="field"><label for="customerPhone">Telefone para contato</label><input id="customerPhone" name="customerPhone" type="tel" required autocomplete="tel" placeholder="(35) 99999-9999"></div>
@@ -62,10 +62,10 @@
         <div class="field"><label for="changeFor">Troco para (se necessário)</label><input id="changeFor" name="changeFor" placeholder="Ex.: R$ 100" inputmode="decimal"></div>
         <div class="field wide"><label for="orderNotes">Observações</label><textarea id="orderNotes" name="orderNotes" placeholder="Instruções para a entrega ou para o preparo"></textarea></div>
       </div>
-      <button class="btn" type="submit">Registrar pedido no PDV</button>
+      <button class="btn" type="submit">Enviar pedido</button>
       <div id="orderConfirmation" class="success-box hide"></div>
     </form>
   </dialog>
-  <footer class="footer-note">Pedidos são sincronizados com o PDV. O histórico e a chave privada de acompanhamento ficam armazenados apenas neste navegador.</footer>
+  <footer class="footer-note">Acompanhe as atualizações no Histórico de pedidos. As informações de acompanhamento ficam salvas neste aparelho.</footer>
 </body>
 </html>
